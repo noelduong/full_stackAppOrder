@@ -963,8 +963,20 @@
       const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzXHijHR98omLDJ0I6KbSw7j489SoNE_N0S_GuOFYCbsJ3L6gvQA-pbiATQLqzqZDf9tg/exec";
 
       function checkAuth() {
-        // Luôn hiển thị màn hình đăng nhập khi mới load app (không lưu session)
+        // Kiểm tra sessionStorage - nếu đã đăng nhập trong phiên này thì bỏ qua
+        if (sessionStorage.getItem('loggedIn') === 'true') {
+          document.getElementById('loginOverlay').style.display = 'none';
+          return;
+        }
+        // Chưa đăng nhập -> hiển thị màn hình đăng nhập
         document.getElementById('loginOverlay').style.display = 'flex';
+      }
+
+      function handleLogout() {
+        sessionStorage.removeItem('loggedIn');
+        document.getElementById('loginOverlay').style.display = 'flex';
+        document.getElementById('loginUser').value = '';
+        document.getElementById('loginPass').value = '';
       }
 
       async function handleLogin() {
@@ -995,7 +1007,8 @@
           const result = await response.json();
 
           if (result.success) {
-            // Đăng nhập thành công -> Chỉ ẩn overlay, không lưu vào device
+            // Đăng nhập thành công -> Lưu vào sessionStorage
+            sessionStorage.setItem('loggedIn', 'true');
             document.getElementById('loginOverlay').style.display = 'none';
           } else {
             err.innerText = result.message || "Tài khoản hoặc mật khẩu không đúng!";

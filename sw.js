@@ -1,8 +1,10 @@
-const CACHE_NAME = 'placement-v3';
+const CACHE_NAME = 'polomanor-v4';
 const ASSETS = [
   './',
   './index.html',
   './icon-512.png',
+  './manifest.json',
+  './assets/logo.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
 

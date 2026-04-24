@@ -1,11 +1,11 @@
 {
-  "name": "Placement Order Manager",
-  "short_name": "Placement",
-  "description": "Hệ thống Quản lý & Tạo Đơn Đặt Hàng chuyên nghiệp",
+  "name": "Polomanor Order Manager",
+  "short_name": "Polomanor",
+  "description": "Hệ thống Quản lý Đặt Hàng & Nhập Kho Polomanor",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#6366f1",
+  "background_color": "#151c32",
+  "theme_color": "#151c32",
   "orientation": "any",
   "icons": [
     {

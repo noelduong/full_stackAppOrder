@@ -1909,7 +1909,15 @@
             showToast(res.message, "success");
             setTimeout(() => {
               if (confirm((isEditMode ? "Cập nhật" : "Lưu") + " thành công! Bạn có muốn làm mới form để tạo đơn mới?")) {
-                window.top.location.href = window.top.location.href;
+                orderItems = [];
+                isEditMode = false;
+                document.getElementById('orderNo').readOnly = false;
+                document.getElementById('orderForm').reset();
+                renderPreview();
+                generateOrderNo();
+                initDateFields();
+                const mainBtn = document.querySelector('.floating-actions .btn-primary');
+                if (mainBtn) mainBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Lưu & Xuất Đơn Hàng (PDF)';
               }
             }, 1000);
           } else {
@@ -2316,9 +2324,14 @@
           hideSpinner();
           if (res.success) {
             showToast(res.message, "success");
-            setTimeout(() => {
-               location.reload();
-            }, 1500);
+            // Reset form nhập hàng mà không reload trang
+            document.getElementById('receiverName').value = '';
+            document.getElementById('receiveBatch').value = '';
+            document.getElementById('receivingItemsArea').innerHTML = '';
+            document.getElementById('receivingActions').style.display = 'none';
+            document.getElementById('poSummaryArea').style.display = 'none';
+            document.getElementById('receiveOrderSearch').value = '';
+            currentReceivingOrderNo = '';
           } else {
             showToast(res.message, "error");
           }

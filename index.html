@@ -670,6 +670,9 @@
     <div class="nav-item" onclick="switchTab('bomTab', this)">
       <i class="fas fa-boxes"></i> <span class="nav-text">Cấp Phát NPL</span>
     </div>
+    <div class="nav-item" onclick="switchTab('planTab', this)">
+      <i class="fas fa-calendar-alt"></i> <span class="nav-text">Kế Hoạch Tháng</span>
+    </div>
 
     <div style="margin-top: auto; padding: 20px 30px; border-top: 1px solid rgba(255,255,255,0.1);">
       <div class="nav-item" style="padding: 10px 0; color: #f87171;" onclick="handleLogout()">
@@ -1025,6 +1028,24 @@
 
       <div id="bomResultArea">
         <!-- BOM calculation results will be rendered here -->
+      </div>
+    </div>
+
+    <!-- TAB: MONTHLY PLAN -->
+    <div id="planTab" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-calendar-alt"></i> KẾ HOẠCH ĐƠN HÀNG THEO THÁNG</h3>
+          <button class="btn btn-outline" onclick="loadMonthlyPlan()">
+            <i class="fas fa-sync-alt"></i> Làm mới
+          </button>
+        </div>
+        <div id="planContent">
+          <div style="text-align:center; padding:40px; color:var(--text-light);">
+            <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;"></i>
+            <p>Đang tải dữ liệu kế hoạch...</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1632,6 +1653,9 @@
       }
       if (tabId === "bomTab") {
         loadPOListForBOM();
+      }
+      if (tabId === "planTab") {
+        loadMonthlyPlan();
       }
     }
 
@@ -2906,6 +2930,144 @@
   `);
 
       printWindow.document.close();
+    }
+
+    /* ================= MONTHLY PLAN ================= */
+    function loadMonthlyPlan() {
+      const area = document.getElementById('planContent');
+      area.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem;"></i><p>Đang tải dữ liệu...</p></div>`;
+      fetch(WEB_APP_URL + "?action=getHistory")
+        .then(r => r.json())
+        .then(res => {
+          if (!res.success || !res.data || res.data.length === 0) {
+            area.innerHTML = `<div style="text-align:center;padding:30px;color:var(--text-light);">Chưa có đơn hàng nào.</div>`;
+            return;
+          }
+          allOrdersHistory = res.data;
+          // Fetch details for all orders to get delivery dates
+          const fetches = res.data.map(o =>
+            fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(o.orderNo))
+              .then(r => r.json())
+              .then(d => ({ orderNo: o.orderNo, partnerName: o.partnerName, creatorName: o.creatorName, total: o.total, poMonth: o.poMonth, details: d.success ? d.data : [] }))
+              .catch(() => ({ orderNo: o.orderNo, partnerName: o.partnerName, creatorName: o.creatorName, total: o.total, poMonth: o.poMonth, details: [] }))
+          );
+          Promise.all(fetches).then(allOrders => renderMonthlyPlan(allOrders, area));
+        })
+        .catch(err => { area.innerHTML = `<div style="text-align:center;padding:30px;color:var(--danger);">Lỗi: ${err.message}</div>`; });
+    }
+
+    function renderMonthlyPlan(allOrders, area) {
+      // Group products by delivery month
+      const monthMap = {}; // key: "YYYY-MM", value: array of { orderNo, productName, color, qty, partnerName }
+      allOrders.forEach(order => {
+        if (!order.details || order.details.length === 0) return;
+        order.details.forEach(item => {
+          const rawDate = item["T.Gian Giao"] || "";
+          let monthKey = "";
+          if (rawDate) {
+            try {
+              const d = new Date(rawDate);
+              if (!isNaN(d.getTime())) {
+                monthKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+              }
+            } catch(e) {}
+          }
+          if (!monthKey && order.poMonth) monthKey = order.poMonth;
+          if (!monthKey) monthKey = "unknown";
+          if (!monthMap[monthKey]) monthMap[monthKey] = [];
+          monthMap[monthKey].push({
+            orderNo: order.orderNo,
+            productName: item["Tên SP"] || "",
+            artCode: item["Art Code"] || "",
+            color: item["Màu"] || "",
+            qty: Number(item["Tổng SL"]) || 0,
+            partnerName: order.partnerName
+          });
+        });
+      });
+
+      // Sort months
+      const months = Object.keys(monthMap).filter(k => k !== "unknown").sort();
+      if (monthMap["unknown"]) months.push("unknown");
+
+      if (months.length === 0) {
+        area.innerHTML = `<div style="text-align:center;padding:30px;color:var(--text-light);">Không có dữ liệu giao hàng.</div>`;
+        return;
+      }
+
+      // Find max qty for bar chart scaling
+      const monthTotals = months.map(m => monthMap[m].reduce((s, p) => s + p.qty, 0));
+      const maxQty = Math.max(...monthTotals, 1);
+
+      let html = '';
+      months.forEach((m, mi) => {
+        const products = monthMap[m];
+        const totalQty = monthTotals[mi];
+        const orderNos = [...new Set(products.map(p => p.orderNo))];
+        const barWidth = Math.round((totalQty / maxQty) * 100);
+
+        // Month label
+        let monthLabel;
+        if (m === "unknown") { monthLabel = "Chưa xác định"; }
+        else {
+          const [y, mo] = m.split("-");
+          monthLabel = `Tháng ${parseInt(mo)}/${y}`;
+        }
+
+        // Color intensity based on order count
+        const intensity = Math.min(orderNos.length, 8);
+        const bgColors = ['#f0fdf4','#dcfce7','#bbf7d0','#86efac','#4ade80','#22c55e','#16a34a','#15803d','#166534'];
+        const cardBg = bgColors[Math.min(intensity, bgColors.length - 1)];
+        const textColor = intensity >= 5 ? 'white' : '#151c32';
+
+        html += `<div style="margin-bottom:16px; border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; background:${cardBg}; cursor:pointer;" onclick="togglePlanMonth('planMonth-${mi}')">
+            <div style="display:flex; align-items:center; gap:15px;">
+              <i class="fas fa-calendar-day" style="font-size:1.3rem; color:${textColor};"></i>
+              <div>
+                <div style="font-weight:700; font-size:1.05rem; color:${textColor};">${monthLabel}</div>
+                <div style="font-size:0.8rem; color:${textColor}; opacity:0.8;">${orderNos.length} đơn hàng · ${products.length} sản phẩm</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:15px;">
+              <div style="width:120px; background:rgba(0,0,0,0.1); border-radius:4px; height:8px; overflow:hidden;">
+                <div style="width:${barWidth}%; height:100%; background:var(--primary); border-radius:4px; transition:width 0.5s;"></div>
+              </div>
+              <span style="font-weight:700; font-size:1.1rem; color:${textColor}; min-width:80px; text-align:right;">${totalQty.toLocaleString('vi-VN')} pcs</span>
+              <i class="fas fa-chevron-down" style="color:${textColor}; opacity:0.5;"></i>
+            </div>
+          </div>
+          <div id="planMonth-${mi}" style="display:none; padding:0 15px 15px;">
+            <table style="width:100%; font-size:0.85rem; margin-top:10px;">
+              <thead><tr style="background:#f8fafc;">
+                <th style="width:35px;">STT</th><th>Mã PO</th><th class="text-left">Tên SP</th><th>Art</th><th>Màu</th><th>NCC</th><th style="text-align:right;">SL</th>
+              </tr></thead><tbody>`;
+
+        products.forEach((p, pi) => {
+          html += `<tr>
+            <td>${pi+1}</td><td style="font-weight:600;">${p.orderNo}</td>
+            <td class="text-left">${p.productName}</td><td>${p.artCode}</td><td>${p.color}</td>
+            <td>${p.partnerName}</td><td style="text-align:right; font-weight:600; color:var(--primary);">${p.qty.toLocaleString('vi-VN')}</td>
+          </tr>`;
+        });
+
+        html += `</tbody></table>
+          </div>
+        </div>`;
+      });
+
+      area.innerHTML = html;
+    }
+
+    function togglePlanMonth(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const isOpen = el.style.display !== 'none';
+      el.style.display = isOpen ? 'none' : 'block';
+      // Toggle chevron
+      const parent = el.previousElementSibling;
+      const icon = parent.querySelector('.fa-chevron-down, .fa-chevron-up');
+      if (icon) { icon.classList.toggle('fa-chevron-down'); icon.classList.toggle('fa-chevron-up'); }
     }
 
     /* ================= BOM CALCULATOR ================= */

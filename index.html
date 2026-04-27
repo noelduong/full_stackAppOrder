@@ -2948,12 +2948,12 @@
           const nplName = colF;
           const dvt = row.c[6] ? (row.c[6].v || '').toString().trim() : 'PCS';
           const moTa = row.c[7] ? (row.c[7].v || '').toString().trim() : '';
-          const nccGoc = row.c[8] ? (row.c[8].v || '').toString().trim() : '';
+          const nguonCung = row.c[9] ? (row.c[9].v || '').toString().trim() : '';
           const dinhMuc = row.c[10] && row.c[10].v !== null ? Number(row.c[10].v) : 1;
           const haoHut = row.c[11] && row.c[11].v !== null ? Number(row.c[11].v) : 0;
           const isSizeLabel = /SIZE|MẠC DỆT|NHÃN ÉP|HEM TAG|HEATSEAL/i.test(nplName) ||
                               /SIZE|MẠC DỆT|NHÃN ÉP|HEM TAG|HEATSEAL/i.test(moTa);
-          allBOMData[currentSection].push({ stt: colC, nplName, dvt, moTa, nccGoc, dinhMuc, haoHut, isSizeLabel });
+          allBOMData[currentSection].push({ stt: colC, nplName, dvt, moTa, nguonCung, dinhMuc, haoHut, isSizeLabel });
         });
       } catch (err) { console.error('processBOMData error:', err); }
     }
@@ -3051,38 +3051,52 @@
       const sel = document.getElementById('bomProductType');
       const typeText = sel.options[sel.selectedIndex].text;
       const orderNo = document.getElementById('bomPOSearch').value.trim();
-      let html = `<div class="card"><div class="card-header"><h3><i class="fas fa-clipboard-list"></i> KẾT QUẢ TÍNH TOÁN PHỤ LIỆU</h3></div>
-        <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px;">
-          <div style="background:var(--primary);color:white;padding:10px 18px;border-radius:6px;font-weight:600;"><i class="fas fa-tag"></i> ${typeText}</div>
-          ${orderNo ? `<div style="background:var(--accent);color:var(--primary);padding:10px 18px;border-radius:6px;font-weight:600;"><i class="fas fa-file-alt"></i> ${orderNo}</div>` : ''}
-          <div style="background:#f0fdf4;color:#166534;padding:10px 18px;border-radius:6px;font-weight:600;border:1px solid #bbf7d0;">Tổng SL: ${totalQty.toLocaleString('vi-VN')} pcs</div>
+      let html = `<div class="card">
+        <div class="card-header"><h3><i class="fas fa-clipboard-list"></i> KẾT QUẢ TÍNH TOÁN PHỤ LIỆU</h3></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">
+          <div style="background:var(--primary);color:white;padding:8px 16px;border-radius:6px;font-weight:600;font-size:0.9rem;"><i class="fas fa-tag"></i> ${typeText}</div>
+          ${orderNo ? `<div style="background:var(--accent);color:var(--primary);padding:8px 16px;border-radius:6px;font-weight:600;font-size:0.9rem;"><i class="fas fa-file-alt"></i> ${orderNo}</div>` : ''}
+          <div style="background:#f0fdf4;color:#166534;padding:8px 16px;border-radius:6px;font-weight:600;font-size:0.9rem;border:1px solid #bbf7d0;">Tổng: ${totalQty.toLocaleString('vi-VN')} pcs</div>
         </div>
-        <div style="background:#f8fafc;border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:20px;">
-          <span style="font-weight:600;color:var(--primary);margin-right:10px;">Phân bổ size:</span>
-          ${validSizes.map(s => `<span style="display:inline-block;background:white;border:1px solid var(--border);padding:4px 12px;border-radius:4px;margin:3px 4px;font-weight:500;">${s.size}: <strong>${s.qty.toLocaleString('vi-VN')}</strong></span>`).join('')}
-        </div>
-        <div class="table-responsive"><table><thead><tr>
-          <th>STT</th><th class="text-left">Tên NPL</th><th>ĐVT</th><th class="text-left">Mô tả</th><th>NCC</th><th>Định mức</th><th>Hao hụt</th>
-          <th style="background:var(--primary);color:white;">SL Cần Cấp</th><th class="text-left" style="background:var(--primary);color:white;">Chi tiết</th>
-        </tr></thead><tbody>`;
+        <div class="table-responsive"><table style="font-size:0.88rem;">
+          <thead><tr>
+            <th style="width:40px;">STT</th>
+            <th class="text-left">Tên NPL</th>
+            <th style="width:50px;">ĐVT</th>
+            <th style="width:65px;">Nguồn</th>
+            <th style="width:55px;">ĐM</th>
+            <th style="width:50px;">Hao hụt</th>
+            ${validSizes.map(s => `<th style="background:#eef2ff;color:var(--primary);width:65px;text-align:center;">${s.size}</th>`).join('')}
+            <th style="background:var(--primary);color:white;width:80px;">TỔNG</th>
+          </tr></thead>
+          <tbody>`;
       items.forEach((item, idx) => {
         const wf = 1 + (item.haoHut || 0);
         if (item.isSizeLabel) {
-          const sd = validSizes.map(s => ({ size: s.size, qty: Math.ceil(s.qty * item.dinhMuc * wf) }));
-          const tot = sd.reduce((s, d) => s + d.qty, 0);
-          html += `<tr style="background:#fffbeb;"><td>${idx+1}</td>
-            <td class="text-left"><strong>${item.nplName}</strong> <span style="background:#f59e0b;color:white;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:700;margin-left:6px;">THEO SIZE</span></td>
-            <td>${item.dvt}</td><td class="text-left" style="max-width:220px;white-space:normal;font-size:0.85rem;">${item.moTa.replace(/\n/g,'<br>')}</td>
-            <td>${item.nccGoc}</td><td>${item.dinhMuc}</td><td>${(item.haoHut*100).toFixed(0)}%</td>
-            <td style="font-weight:700;color:var(--primary);font-size:1.1em;">${tot.toLocaleString('vi-VN')}</td>
-            <td class="text-left">${sd.map(d => `<span style="display:inline-block;background:#fef3c7;border:1px solid #fbbf24;padding:2px 8px;border-radius:4px;margin:2px;font-size:0.85rem;">${d.size}: <strong>${d.qty.toLocaleString('vi-VN')}</strong></span>`).join('')}</td></tr>`;
+          const sd = validSizes.map(s => Math.ceil(s.qty * item.dinhMuc * wf));
+          const tot = sd.reduce((a, b) => a + b, 0);
+          html += `<tr style="background:#fffbeb;">
+            <td>${idx+1}</td>
+            <td class="text-left"><strong>${item.nplName}</strong> <span style="background:#f59e0b;color:white;padding:1px 5px;border-radius:3px;font-size:0.65rem;font-weight:700;">SIZE</span></td>
+            <td>${item.dvt}</td>
+            <td>${item.nguonCung}</td>
+            <td>${item.dinhMuc}</td>
+            <td>${(item.haoHut*100).toFixed(0)}%</td>
+            ${sd.map(q => `<td style="text-align:center;font-weight:700;color:#b45309;background:#fef3c7;">${q.toLocaleString('vi-VN')}</td>`).join('')}
+            <td style="font-weight:700;color:var(--primary);text-align:center;font-size:1.05em;">${tot.toLocaleString('vi-VN')}</td>
+          </tr>`;
         } else {
           const needed = Math.ceil(totalQty * item.dinhMuc * wf);
-          html += `<tr><td>${idx+1}</td><td class="text-left"><strong>${item.nplName}</strong></td>
-            <td>${item.dvt}</td><td class="text-left" style="max-width:220px;white-space:normal;font-size:0.85rem;">${item.moTa.replace(/\n/g,'<br>')}</td>
-            <td>${item.nccGoc}</td><td>${item.dinhMuc}</td><td>${(item.haoHut*100).toFixed(0)}%</td>
-            <td style="font-weight:700;color:var(--primary);font-size:1.1em;">${needed.toLocaleString('vi-VN')}</td>
-            <td class="text-left" style="color:var(--text-light);font-size:0.85rem;">${totalQty.toLocaleString('vi-VN')} × ${item.dinhMuc} × ${wf.toFixed(2)}</td></tr>`;
+          html += `<tr>
+            <td>${idx+1}</td>
+            <td class="text-left"><strong>${item.nplName}</strong></td>
+            <td>${item.dvt}</td>
+            <td>${item.nguonCung}</td>
+            <td>${item.dinhMuc}</td>
+            <td>${(item.haoHut*100).toFixed(0)}%</td>
+            ${validSizes.map(() => `<td style="text-align:center;color:#cbd5e1;">—</td>`).join('')}
+            <td style="font-weight:700;color:var(--primary);text-align:center;font-size:1.05em;">${needed.toLocaleString('vi-VN')}</td>
+          </tr>`;
         }
       });
       html += `</tbody></table></div></div>`;

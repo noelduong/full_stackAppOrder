@@ -1,576 +1,640 @@
 <!doctype html>
 <html>
-  <head>
-    <base target="_top" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#6366f1" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="apple-touch-icon" href="icon-512.png" />
-    <link rel="icon" type="image/png" href="icon-512.png" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <style>
-      :root {
-        /* Brand Colors based on the Logo */
-        --primary: #151c32; /* Updated to exact requested color */
-        --primary-light: #2a3a61; /* Slightly lighter hover version to match */
-        --accent: #d4b896; /* Signature Gold/Beige */
-        --accent-hover: #c4a682;
 
-        /* UI Colors */
-        --bg: #f8f9fa; /* Very clean off-white */
-        --card-bg: #ffffff;
-        --text: #1a1a1a;
-        --text-light: #64748b;
-        --border: #e2e8f0;
+<head>
+  <base target="_top" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="icon" type="image/png" href="icon-512.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      /* Brand Colors based on the Logo */
+      --primary: #151c32;
+      /* Updated to exact requested color */
+      --primary-light: #2a3a61;
+      /* Slightly lighter hover version to match */
+      --accent: #d4b896;
+      /* Signature Gold/Beige */
+      --accent-hover: #c4a682;
 
-        /* Feedback Colors */
-        --success: #10b981;
-        --danger: #ef4444;
-        --danger-hover: #dc2626;
+      /* UI Colors */
+      --bg: #f8f9fa;
+      /* Very clean off-white */
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-light: #64748b;
+      --border: #e2e8f0;
 
-        /* Table specific */
-        --table-header: #f8fafc;
-        --table-border: #e2e8f0;
+      /* Feedback Colors */
+      --success: #10b981;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+
+      /* Table specific */
+      --table-header: #f8fafc;
+      --table-border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Lexend", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* TYPOGRAPHY */
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: var(--primary);
+      font-family: "Lexend", sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    /* LAYOUT */
+    .sidebar {
+      width: 260px;
+      background-color: var(--primary);
+      color: white;
+      padding: 30px 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 40px;
+      padding-bottom: 90px;
+    }
+
+    /* SIDEBAR */
+    .brand {
+      text-align: center;
+      padding-bottom: 25px;
+      border-bottom: none;
+      margin-bottom: 0;
+      background-color: #151c32;
+      /* frame color aligned */
+    }
+
+    .brand img {
+      height: 98px;
+      /* 75px * 1.3 (increase 30%) */
+      object-fit: contain;
+      border: none;
+      box-shadow: none;
+    }
+
+    .brand h2 {
+      color: var(--accent);
+      margin-top: 15px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      padding: 16px 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #94a3b8;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-family: "Lexend", sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background-color: var(--primary-light);
+      color: var(--accent);
+      border-left: 4px solid var(--accent);
+    }
+
+    .nav-item i {
+      font-size: 1.1em;
+    }
+
+    /* CARDS & FORMS */
+    .card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      /* Sharper geometry */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .card-header {
+      font-size: 1.4rem;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 5px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-family: "Lexend", sans-serif;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      /* Minimal border radius */
+      font-family: "Lexend", sans-serif;
+      font-size: 0.95rem;
+      background-color: #fdfdfd;
+      transition: all 0.2s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #cbd5e1;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(212, 184, 150, 0.15);
+    }
+
+    input[type="number"]::-webkit-inner-spin-button {
+      display: none;
+    }
+
+    .invalid {
+      border-color: var(--danger) !important;
+      background-color: #fef2f2 !important;
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* BUTTONS */
+    .btn {
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: "Lexend", sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .btn-accent:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 12px rgba(212, 184, 150, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg);
+      border-color: #cbd5e1;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: var(--danger-hover);
+    }
+
+    .btn-icon {
+      padding: 8px;
+      border-radius: 4px;
+      text-transform: none;
+    }
+
+    /* SIZES CONFIG */
+    .size-container {
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+
+    .size-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .size-row input {
+      flex: 1;
+    }
+
+    .size-row button {
+      flex: 0 0 42px;
+    }
+
+    /* TABLES */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 4px;
+      border: 1px solid var(--table-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      white-space: nowrap;
+    }
+
+    th {
+      background-color: var(--table-header);
+      color: var(--primary);
+      font-family: "Lexend", sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      padding: 16px 15px;
+      border: 1px solid var(--table-border);
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      padding: 14px 15px;
+      text-align: center;
+      border: 1px solid var(--table-border);
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    /* Styling for footer to remove gridlines and fix contrast */
+    tfoot td {
+      border: none;
+      border-top: 2px solid var(--accent);
+      color: white;
+    }
+
+    tbody tr {
+      transition: background-color 0.2s;
+    }
+
+    tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .text-left {
+      text-align: left;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .toast {
+      background: white;
+      border-left: 4px solid var(--success);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 16px 24px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Lexend", sans-serif;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.error {
+      border-left-color: var(--danger);
+    }
+
+    .toast i {
+      font-size: 1.25rem;
+    }
+
+    .toast.success i {
+      color: var(--success);
+    }
+
+    .toast.error i {
+      color: var(--danger);
+    }
+
+    /* SPINNER */
+    .spinner-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(2px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .spinner {
+      width: 45px;
+      height: 45px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
       }
+    }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+    /* FLOATING ACTIONS */
+    .floating-actions {
+      position: fixed;
+      bottom: 0;
+      left: 260px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      padding: 16px 40px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      z-index: 90;
+    }
 
-      body {
-        font-family: "Lexend", sans-serif;
-        background-color: var(--bg);
-        color: var(--text);
-        display: flex;
-        min-height: 100vh;
-        font-size: 15px;
-        line-height: 1.5;
-      }
-
-      /* TYPOGRAPHY */
-      h1,
-      h2,
-      h3,
-      h4 {
-        color: var(--primary);
-        font-family: "Lexend", sans-serif;
-        font-weight: 600;
-        letter-spacing: -0.3px;
-      }
-
-      /* LAYOUT */
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
       .sidebar {
-        width: 260px;
-        background-color: var(--primary);
-        color: white;
-        padding: 30px 0;
-        position: fixed;
-        height: 100vh;
-        overflow-y: auto;
-        z-index: 100;
+        width: 70px;
+        padding: 20px 0;
       }
 
-      .main-content {
-        flex: 1;
-        margin-left: 260px;
-        padding: 40px;
-        padding-bottom: 90px;
-      }
-
-      /* SIDEBAR */
-      .brand {
-        text-align: center;
-        padding-bottom: 25px;
-        border-bottom: none;
-        margin-bottom: 0;
-        background-color: #151c32; /* frame color aligned */
-      }
-      .brand img {
-        height: 98px; /* 75px * 1.3 (increase 30%) */
-        object-fit: contain;
-        border: none;
-        box-shadow: none;
-      }
-      .brand h2 {
-        color: var(--accent);
-        margin-top: 15px;
-        font-size: 1.3rem;
-        font-weight: 700;
-        letter-spacing: 3.5px;
-        text-transform: uppercase;
+      .nav-text {
+        display: none;
       }
 
       .nav-item {
-        padding: 16px 30px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: #94a3b8;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        font-family: "Lexend", sans-serif;
-        font-size: 0.9rem;
-        letter-spacing: 0.5px;
-      }
-      .nav-item:hover,
-      .nav-item.active {
-        background-color: var(--primary-light);
-        color: var(--accent);
-        border-left: 4px solid var(--accent);
-      }
-      .nav-item i {
-        font-size: 1.1em;
-      }
-
-      /* CARDS & FORMS */
-      .card {
-        background: var(--card-bg);
-        border-radius: 8px; /* Sharper geometry */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-        padding: 30px;
-        margin-bottom: 30px;
-        border: 1px solid #f1f5f9;
-      }
-      .card-header {
-        font-size: 1.4rem;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-      }
-      .grid-4 {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-      }
-
-      .form-group {
-        margin-bottom: 5px;
-      }
-      label {
-        display: block;
-        font-size: 0.85rem;
-        font-family: "Lexend", sans-serif;
-        font-weight: 600;
-        color: var(--primary);
-        margin-bottom: 8px;
-      }
-      input,
-      textarea,
-      select {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1px solid var(--border);
-        border-radius: 4px; /* Minimal border radius */
-        font-family: "Lexend", sans-serif;
-        font-size: 0.95rem;
-        background-color: #fdfdfd;
-        transition: all 0.2s ease;
-      }
-      input::placeholder,
-      textarea::placeholder {
-        color: #cbd5e1;
-      }
-      input:focus,
-      textarea:focus,
-      select:focus {
-        outline: none;
-        border-color: var(--accent);
-        background-color: #fff;
-        box-shadow: 0 0 0 3px rgba(212, 184, 150, 0.15);
-      }
-      input[type="number"]::-webkit-inner-spin-button {
-        display: none;
-      }
-
-      .invalid {
-        border-color: var(--danger) !important;
-        background-color: #fef2f2 !important;
-      }
-      .error-msg {
-        color: var(--danger);
-        font-size: 0.75rem;
-        margin-top: 4px;
-        display: none;
-      }
-
-      /* BUTTONS */
-      .btn {
-        padding: 12px 24px;
-        border-radius: 4px;
-        font-weight: 600;
-        font-family: "Lexend", sans-serif;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        cursor: pointer;
-        border: none;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .btn-primary {
-        background: var(--primary);
-        color: white;
-      }
-      .btn-primary:hover {
-        background: #000;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      .btn-accent {
-        background: var(--accent);
-        color: var(--primary);
-      }
-      .btn-accent:hover {
-        background: var(--accent-hover);
-        box-shadow: 0 4px 12px rgba(212, 184, 150, 0.3);
-      }
-
-      .btn-outline {
-        background: transparent;
-        border: 1px solid var(--border);
-        color: var(--primary);
-      }
-      .btn-outline:hover {
-        background: var(--bg);
-        border-color: #cbd5e1;
-      }
-
-      .btn-danger {
-        background: var(--danger);
-        color: white;
-      }
-      .btn-danger:hover {
-        background: var(--danger-hover);
-      }
-
-      .btn-icon {
-        padding: 8px;
-        border-radius: 4px;
-        text-transform: none;
-      }
-
-      /* SIZES CONFIG */
-      .size-container {
-        border: 1px solid var(--border);
-        padding: 15px;
-        border-radius: 4px;
-        background: #fafafa;
-      }
-      .size-row {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-      .size-row input {
-        flex: 1;
-      }
-      .size-row button {
-        flex: 0 0 42px;
-      }
-
-      /* TABLES */
-      .table-responsive {
-        overflow-x: auto;
-        border-radius: 4px;
-        border: 1px solid var(--table-border);
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        white-space: nowrap;
-      }
-      th {
-        background-color: var(--table-header);
-        color: var(--primary);
-        font-family: "Lexend", sans-serif;
-        font-weight: 600;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        position: sticky;
-        top: 0;
-        padding: 16px 15px;
-        border: 1px solid var(--table-border);
-        border-bottom: 2px solid var(--border);
-      }
-      td {
-        padding: 14px 15px;
-        text-align: center;
-        border: 1px solid var(--table-border);
-        font-size: 0.95rem;
-        color: var(--text);
-      }
-      /* Styling for footer to remove gridlines and fix contrast */
-      tfoot td {
-        border: none;
-        border-top: 2px solid var(--accent);
-        color: white;
-      }
-
-      tbody tr {
-        transition: background-color 0.2s;
-      }
-      tbody tr:hover {
-        background-color: #f8fafc;
-      }
-      .text-left {
-        text-align: left;
-      }
-      .text-right {
-        text-align: right;
-      }
-      .text-center {
-        text-align: center;
-      }
-
-      /* TOAST */
-      .toast-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
-      }
-      .toast {
-        background: white;
-        border-left: 4px solid var(--success);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        padding: 16px 24px;
-        border-radius: 4px;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-family: "Lexend", sans-serif;
-        transform: translateX(120%);
-        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      .toast.show {
-        transform: translateX(0);
-      }
-      .toast.error {
-        border-left-color: var(--danger);
-      }
-      .toast i {
-        font-size: 1.25rem;
-      }
-      .toast.success i {
-        color: var(--success);
-      }
-      .toast.error i {
-        color: var(--danger);
-      }
-
-      /* SPINNER */
-      .spinner-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(2px);
-        display: none;
+        padding: 16px 0;
         justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        flex-direction: column;
-        gap: 15px;
-      }
-      .spinner {
-        width: 45px;
-        height: 45px;
-        border: 3px solid var(--border);
-        border-top-color: var(--primary);
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
       }
 
-      /* FLOATING ACTIONS */
-      .floating-actions {
-        position: fixed;
-        bottom: 0;
-        left: 260px;
-        right: 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(5px);
-        padding: 16px 40px;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: flex-end;
-        gap: 15px;
-        z-index: 90;
-      }
-
-      /* RESPONSIVE */
-      @media (max-width: 1024px) {
-        .sidebar {
-          width: 70px;
-          padding: 20px 0;
-        }
-        .nav-text {
-          display: none;
-        }
-        .nav-item {
-          padding: 16px 0;
-          justify-content: center;
-        }
-        .main-content {
-          margin-left: 70px;
-          padding: 20px;
-        }
-        .floating-actions {
-          left: 70px;
-          padding: 15px 20px;
-        }
-        .brand img {
-          height: 40px;
-        }
-        .brand h2 {
-          display: none;
-        }
-      }
-
-      .tab-content {
-        display: none;
-      }
-      .tab-content.active {
-        display: block;
-        animation: fadeIn 0.4s ease;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(5px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* LOGIN OVERLAY */
-      .login-overlay {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(circle, #e2e8f0 0%, #94a3b8 100%);
-        z-index: 2000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .main-content {
+        margin-left: 70px;
         padding: 20px;
       }
-      .login-card {
-        background: #151c32; /* Navy background */
-        padding: 40px;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 400px;
-        text-align: center;
-        box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-        color: white;
+
+      .floating-actions {
+        left: 70px;
+        padding: 15px 20px;
       }
-      .login-card h2 {
-        color: var(--accent);
+
+      .brand img {
+        height: 40px;
       }
-      .login-card p {
-        color: #94a3b8;
+
+      .brand h2 {
+        display: none;
       }
-      .login-card label {
-        color: #cbd5e1;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
       }
-      .login-card input {
-        background: rgba(255,255,255,0.05);
-        border-color: rgba(255,255,255,0.1);
-        color: white;
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
-      .login-card input:focus {
-        background: rgba(255,255,255,0.1);
-        border-color: var(--accent);
-      }
-      .login-card .btn-primary {
-        background: var(--accent);
-        color: var(--primary);
-      }
-      .login-card .btn-primary:hover {
-        background: var(--accent-hover);
-      }
-    </style>
-  </head>
-  <body>
-    <!-- LOGIN OVERLAY -->
-    <div id="loginOverlay" class="login-overlay">
-      <div class="login-card">
-        <div class="brand" style="margin-bottom: 30px; background: transparent;">
-          <img src="assets/logo.png" alt="Logo" style="height: 100px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));">
-        </div>
-        <h2 style="margin-bottom: 10px;">HỆ THỐNG PLACEMENT</h2>
-        <p style="margin-bottom: 30px; font-size: 0.9rem;">Vui lòng đăng nhập để tiếp tục</p>
-        
-        <div class="form-group" style="text-align: left;">
-          <label>Tên đăng nhập</label>
-          <input type="text" id="loginUser" placeholder="Tên tài khoản...">
-        </div>
-        <div class="form-group" style="text-align: left; margin-top: 15px;">
-          <label>Mật khẩu</label>
-          <input type="password" id="loginPass" placeholder="••••••••" onkeypress="if(event.key === 'Enter') handleLogin()">
-        </div>
-        
-        <button class="btn btn-primary" style="width: 100%; margin-top: 25px; justify-content: center;" id="loginBtn" onclick="handleLogin()">
-          <i class="fas fa-sign-in-alt"></i> Đăng nhập
-        </button>
-        
-        <div id="loginError" style="color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; font-weight: 600;">
-          Tài khoản hoặc mật khẩu không đúng!
-        </div>
+    }
+
+    /* LOGIN OVERLAY */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle, #e2e8f0 0%, #94a3b8 100%);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: #151c32;
+      /* Navy background */
+      padding: 40px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      color: white;
+    }
+
+    .login-card h2 {
+      color: var(--accent);
+    }
+
+    .login-card p {
+      color: #94a3b8;
+    }
+
+    .login-card label {
+      color: #cbd5e1;
+    }
+
+    .login-card input {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .login-card input:focus {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+    }
+
+    .login-card .btn-primary {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .login-card .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- LOGIN OVERLAY -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+      <div class="brand" style="margin-bottom: 30px; background: transparent;">
+        <img src="assets/logo.png" alt="Logo" style="height: 100px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));">
+      </div>
+      <h2 style="margin-bottom: 10px;">HỆ THỐNG PLACEMENT</h2>
+      <p style="margin-bottom: 30px; font-size: 0.9rem;">Vui lòng đăng nhập để tiếp tục</p>
+
+      <div class="form-group" style="text-align: left;">
+        <label>Tên đăng nhập</label>
+        <input type="text" id="loginUser" placeholder="Tên tài khoản...">
+      </div>
+      <div class="form-group" style="text-align: left; margin-top: 15px;">
+        <label>Mật khẩu</label>
+        <input type="password" id="loginPass" placeholder="••••••••"
+          onkeypress="if(event.key === 'Enter') handleLogin()">
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; margin-top: 25px; justify-content: center;" id="loginBtn"
+        onclick="handleLogin()">
+        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+      </button>
+
+      <div id="loginError"
+        style="color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; font-weight: 600;">
+        Tài khoản hoặc mật khẩu không đúng!
       </div>
     </div>
-    <!-- SPINNER -->
-    <div class="spinner-overlay" id="spinner">
-      <div class="spinner"></div>
-      <div style="font-weight: 600; color: var(--primary)" id="spinnerText">
-        Đang xử lý...
-      </div>
+  </div>
+  <!-- SPINNER -->
+  <div class="spinner-overlay" id="spinner">
+    <div class="spinner"></div>
+    <div style="font-weight: 600; color: var(--primary)" id="spinnerText">
+      Đang xử lý...
     </div>
+  </div>
 
-    <!-- TOAST -->
-    <div class="toast-container" id="toastContainer"></div>
+  <!-- TOAST -->
+  <div class="toast-container" id="toastContainer"></div>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="brand" style="padding-top: 10px">
-        <!-- Removed extra H2 name since the logo image already contains the brand identity -->
-        <div
-          style="
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand" style="padding-top: 10px">
+      <!-- Removed extra H2 name since the logo image already contains the brand identity -->
+      <div style="
             width: 252px;
             height: 98px;
             margin: 0 auto;
@@ -579,13 +643,8 @@
             align-items: center;
             justify-content: center;
             position: relative;
-          "
-        >
-          <img
-            src="assets/logo.png"
-            alt="Polomanor Logo"
-            referrerpolicy="no-referrer"
-            style="
+          ">
+        <img src="assets/logo.png" alt="Polomanor Logo" referrerpolicy="no-referrer" style="
               width: auto;
               height: 80%;
               max-width: 100%;
@@ -594,1188 +653,1240 @@
               object-position: center;
               transform: none;
               background: transparent;
-            "
-          />
-        </div>
-      </div>
-
-      <div class="nav-item active" onclick="switchTab('createTab', this)">
-        <i class="fas fa-plus-circle"></i>
-        <span class="nav-text">Tạo Đơn Hàng</span>
-      </div>
-      <div class="nav-item" onclick="switchTab('historyTab', this)">
-        <i class="fas fa-history"></i> <span class="nav-text">Lịch Sử Đơn</span>
-      </div>
-      <div class="nav-item" onclick="switchTab('receivingTab', this)">
-        <i class="fas fa-truck-loading"></i> <span class="nav-text">Nhập Hàng</span>
-      </div>
-
-      <div style="margin-top: auto; padding: 20px 30px; border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="nav-item" style="padding: 10px 0; color: #f87171;" onclick="handleLogout()">
-          <i class="fas fa-sign-out-alt"></i> <span class="nav-text">Đăng xuất</span>
-        </div>
+            " />
       </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-      <!-- TAB: CREATE ORDER -->
-      <div id="createTab" class="tab-content active">
-        <!-- Order Info -->
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-file-invoice"></i> 1. THÔNG TIN CHUNG</h3>
-          </div>
-          <div class="grid-2">
-            <div class="form-group">
-              <label>Mã Đơn Hàng</label>
-              <input
-                id="orderNo"
-                readonly
-                style="
+    <div class="nav-item active" onclick="switchTab('createTab', this)">
+      <i class="fas fa-plus-circle"></i>
+      <span class="nav-text">Tạo Đơn Hàng</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('historyTab', this)">
+      <i class="fas fa-history"></i> <span class="nav-text">Lịch Sử Đơn</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('receivingTab', this)">
+      <i class="fas fa-truck-loading"></i> <span class="nav-text">Nhập Hàng</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('bomTab', this)">
+      <i class="fas fa-boxes"></i> <span class="nav-text">Cấp Phát NPL</span>
+    </div>
+
+    <div style="margin-top: auto; padding: 20px 30px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <div class="nav-item" style="padding: 10px 0; color: #f87171;" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt"></i> <span class="nav-text">Đăng xuất</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <!-- TAB: CREATE ORDER -->
+    <div id="createTab" class="tab-content active">
+      <!-- Order Info -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-file-invoice"></i> 1. THÔNG TIN CHUNG</h3>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Mã Đơn Hàng</label>
+            <input id="orderNo" readonly style="
                   background: #f3f4f6;
                   font-weight: bold;
                   color: var(--primary);
-                "
-              />
-            </div>
-            <div class="form-group">
-              <label>Ngày Lập</label>
-              <input type="date" id="orderDate" />
-            </div>
+                " />
+          </div>
+          <div class="form-group">
+            <label>Ngày Lập</label>
+            <input type="date" id="orderDate" />
+          </div>
 
-            <div class="form-group">
-              <label>Người Lập Đơn (Đại diện Polomanor) <span style="color: var(--danger)">*</span></label>
-              <input id="creatorName" placeholder="Họ và tên..." />
-            </div>
-            <div class="form-group">
-              <label>PO Tháng</label>
-              <input type="month" id="poMonth" />
-            </div>
-            <div class="form-group">
-              <label
-                >Tên Công Ty <span style="color: var(--danger)">*</span></label
-              >
-              <input id="companyName" placeholder="Tên pháp nhân công ty..." />
-            </div>
-            <div class="form-group">
-              <label
-                >Tên Nhà Cung Cấp / Xưởng
-                <span style="color: var(--danger)">*</span></label
-              >
-              <input id="partnerName" list="partnerList" placeholder="VD: TALYNO..." onchange="onPartnerChange(this.value)" />
-              <datalist id="partnerList"></datalist>
-            </div>
-            <div class="form-group" style="grid-column: span 2">
-              <label>Địa Chỉ / Liên Hệ</label>
-              <input id="partnerAddress" placeholder="Địa chỉ đối tác..." />
-            </div>
+          <div class="form-group">
+            <label>Người Lập Đơn (Đại diện Polomanor) <span style="color: var(--danger)">*</span></label>
+            <input id="creatorName" placeholder="Họ và tên..." />
+          </div>
+          <div class="form-group">
+            <label>PO Tháng</label>
+            <input type="month" id="poMonth" />
+          </div>
+          <div class="form-group">
+            <label>Tên Công Ty <span style="color: var(--danger)">*</span></label>
+            <input id="companyName" placeholder="Tên pháp nhân công ty..." />
+          </div>
+          <div class="form-group">
+            <label>Tên Nhà Cung Cấp / Xưởng
+              <span style="color: var(--danger)">*</span></label>
+            <input id="partnerName" list="partnerList" placeholder="VD: TALYNO..."
+              onchange="onPartnerChange(this.value)" />
+            <datalist id="partnerList"></datalist>
+          </div>
+          <div class="form-group" style="grid-column: span 2">
+            <label>Địa Chỉ / Liên Hệ</label>
+            <input id="partnerAddress" placeholder="Địa chỉ đối tác..." />
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Product Form -->
+      <div class="card" id="productFormCard">
+        <div class="card-header">
+          <h3 id="formTitle">2. THÔNG TIN SẢN PHẨM</h3>
+          <button class="btn btn-outline" onclick="clearProductForm()">
+            <i class="fas fa-eraser"></i> Làm mới
+          </button>
+        </div>
+
+        <input type="hidden" id="editIndex" value="-1" />
+
+        <div class="grid-4">
+          <div class="form-group">
+            <label>Art (Mã SP)</label>
+            <input id="artCode" list="poList" placeholder="VD: PO88" onchange="onArtCodeChange(this.value)" />
+            <datalist id="poList"></datalist>
+          </div>
+          <div class="form-group" style="grid-column: span 2">
+            <label>Tên gọi SP / Mã phát triển
+              <span style="color: var(--danger)">*</span></label>
+            <input id="productName" placeholder="VD: Áo Polo Classic..." />
+          </div>
+          <div class="form-group">
+            <label>Màu Sắc</label>
+            <input id="color" placeholder="VD: Trắng" />
+          </div>
+
+          <div class="form-group" style="grid-column: span 2">
+            <label>Link Hình Ảnh SP</label>
+            <input id="imageUrl" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label>Thông tin NPL</label>
+            <input id="nplInfo" placeholder="Cotton 100%..." />
+          </div>
+          <div class="form-group">
+            <label>Thời Gian Giao Hàng</label>
+            <input type="date" id="deliveryDate" />
           </div>
         </div>
 
-        <!-- Add Product Form -->
-        <div class="card" id="productFormCard">
-          <div class="card-header">
-            <h3 id="formTitle">2. THÔNG TIN SẢN PHẨM</h3>
-            <button class="btn btn-outline" onclick="clearProductForm()">
-              <i class="fas fa-eraser"></i> Làm mới
-            </button>
-          </div>
+        <hr style="border:0; border-top: 1px dashed var(--border); margin: 25px 0;">
 
-          <input type="hidden" id="editIndex" value="-1" />
-
-          <div class="grid-4">
-            <div class="form-group">
-              <label>Art (Mã SP)</label>
-              <input id="artCode" list="poList" placeholder="VD: PO88" onchange="onArtCodeChange(this.value)" />
-              <datalist id="poList"></datalist>
-            </div>
-            <div class="form-group" style="grid-column: span 2">
-              <label
-                >Tên gọi SP / Mã phát triển
-                <span style="color: var(--danger)">*</span></label
-              >
-              <input id="productName" placeholder="VD: Áo Polo Classic..." />
-            </div>
-            <div class="form-group">
-              <label>Màu Sắc</label>
-              <input id="color" placeholder="VD: Trắng" />
-            </div>
-
-            <div class="form-group" style="grid-column: span 2">
-              <label>Link Hình Ảnh SP</label>
-              <input id="imageUrl" placeholder="https://..." />
-            </div>
-            <div class="form-group">
-              <label>Thông tin NPL</label>
-              <input id="nplInfo" placeholder="Cotton 100%..." />
-            </div>
-            <div class="form-group">
-              <label>Thời Gian Giao Hàng</label>
-              <input type="date" id="deliveryDate" />
+        <!-- Giao diện 2 cột thông minh: Size bên trái, Giá & Note bên phải -->
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Phân Bổ Size</label>
+            <div class="size-container" style="height: 100%;">
+              <div id="sizeRows"></div>
+              <button class="btn btn-outline" style="width: 100%; margin-top: 10px; font-size: 0.85rem"
+                onclick="addSizeRow()">
+                <i class="fas fa-plus"></i> Thêm Size
+              </button>
             </div>
           </div>
 
-          <hr style="border:0; border-top: 1px dashed var(--border); margin: 25px 0;">
-
-          <!-- Giao diện 2 cột thông minh: Size bên trái, Giá & Note bên phải -->
-          <div class="grid-2">
-            <div class="form-group">
-              <label>Phân Bổ Size</label>
-              <div class="size-container" style="height: 100%;">
-                <div id="sizeRows"></div>
-                <button
-                  class="btn btn-outline"
-                  style="width: 100%; margin-top: 10px; font-size: 0.85rem"
-                  onclick="addSizeRow()"
-                >
-                  <i class="fas fa-plus"></i> Thêm Size
-                </button>
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="display:flex;align-items:center;gap:8px">
+                <i class="fas fa-tag" style="color:var(--accent)"></i>
+                Giá Tham Chiếu (Nhà Máy)
+              </label>
+              <div id="priceRefBox"
+                style="background:#f8fafc;border:1px solid var(--border);border-radius:4px;padding:12px 14px;font-size:0.88rem;color:var(--text-light);min-height:45px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span id="priceRefText">&#8212; Chọn sản phẩm để xem giá tham chiếu</span>
               </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-              <div class="form-group" style="margin-bottom: 0;">
-                <label style="display:flex;align-items:center;gap:8px">
-                  <i class="fas fa-tag" style="color:var(--accent)"></i>
-                  Giá Tham Chiếu (Nhà Máy)
-                </label>
-                <div id="priceRefBox" style="background:#f8fafc;border:1px solid var(--border);border-radius:4px;padding:12px 14px;font-size:0.88rem;color:var(--text-light);min-height:45px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                  <span id="priceRefText">&#8212; Chọn sản phẩm để xem giá tham chiếu</span>
-                </div>
+            <div style="display: flex; gap: 15px">
+              <div style="flex: 1">
+                <label>Đơn Giá (VNĐ)
+                  <span style="color: var(--danger)">*</span></label>
+                <input type="text" id="unitPriceDisplay" placeholder="0" oninput="formatPriceInput(this)" />
+                <input type="hidden" id="unitPrice" />
               </div>
-
-              <div style="display: flex; gap: 15px">
-                <div style="flex: 1">
-                  <label
-                    >Đơn Giá (VNĐ)
-                    <span style="color: var(--danger)">*</span></label
-                  >
-                  <input
-                    type="text"
-                    id="unitPriceDisplay"
-                    placeholder="0"
-                    oninput="formatPriceInput(this)"
-                  />
-                  <input type="hidden" id="unitPrice" />
-                </div>
-                <div style="flex: 0 0 130px">
-                  <label>VAT Toàn Đơn</label>
-                  <div style="position: relative">
-                    <input
-                      type="number"
-                      id="vatRate"
-                      value="8"
-                      min="0"
-                      style="
+              <div style="flex: 0 0 130px">
+                <label>VAT Toàn Đơn</label>
+                <div style="position: relative">
+                  <input type="number" id="vatRate" value="8" min="0" style="
                         width: 100%;
                         font-weight: bold;
                         color: var(--primary);
                         background: #f8fafc;
                         border-color: var(--accent);
-                      "
-                      oninput="renderPreview()"
-                    />
-                    <span
-                      style="
+                      " oninput="renderPreview()" />
+                  <span style="
                         position: absolute;
                         right: 15px;
                         top: 12px;
                         font-weight: bold;
                         color: #64748b;
-                      "
-                      >%</span
-                    >
-                  </div>
+                      ">%</span>
                 </div>
               </div>
-
-              <div class="form-group" style="margin-bottom: 0;">
-                <label>Ghi Chú</label>
-                <textarea
-                  id="note"
-                  rows="2"
-                  placeholder="Ghi chú kỹ thuật..."
-                ></textarea>
-              </div>
             </div>
-          </div>
 
-          <div style="text-align: right; margin-top: 15px">
-            <button class="btn btn-accent" onclick="saveProduct()">
-              <i class="fas fa-plus"></i>
-              <span id="saveProductBtnText">Lưu Sản Phẩm Vào Đơn</span>
-            </button>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label>Ghi Chú</label>
+              <textarea id="note" rows="2" placeholder="Ghi chú kỹ thuật..."></textarea>
+            </div>
           </div>
         </div>
 
-        <!-- Preview Table -->
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-list-check"></i> 3. CHI TIẾT ĐƠN HÀNG</h3>
-          </div>
+        <div style="text-align: right; margin-top: 15px">
+          <button class="btn btn-accent" onclick="saveProduct()">
+            <i class="fas fa-plus"></i>
+            <span id="saveProductBtnText">Lưu Sản Phẩm Vào Đơn</span>
+          </button>
+        </div>
+      </div>
 
-          <div id="previewArea">
-            <div
-              style="
+      <!-- Preview Table -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-list-check"></i> 3. CHI TIẾT ĐƠN HÀNG</h3>
+        </div>
+
+        <div id="previewArea">
+          <div style="
                 text-align: center;
                 padding: 30px;
                 color: var(--text-light);
                 font-style: italic;
-              "
-            >
-              Chưa có sản phẩm nào. Vui lòng thêm sản phẩm ở form phía trên.
-            </div>
+              ">
+            Chưa có sản phẩm nào. Vui lòng thêm sản phẩm ở form phía trên.
           </div>
-        </div>
-
-        <!-- Footer Actions -->
-        <div class="floating-actions">
-          <button class="btn btn-outline" onclick="exportPDF()">
-            <i class="fas fa-file-pdf"></i> Xem & Xuất PDF
-          </button>
-          <button class="btn btn-primary" onclick="submitOrderProcess()">
-            <i class="fas fa-paper-plane"></i> Gửi Đơn Đặt Hàng
-          </button>
         </div>
       </div>
 
-      <!-- TAB: HISTORY -->
-      <div id="historyTab" class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-history"></i> Lịch Sử Đơn Hàng</h3>
-            <button class="btn btn-outline" onclick="loadOrderHistory()">
-              <i class="fas fa-sync-alt"></i> Làm mới
-            </button>
-          </div>
-          <div id="historyArea">
-            <div
-              style="
+      <!-- Footer Actions -->
+      <div class="floating-actions">
+        <button class="btn btn-outline" onclick="exportPDF()">
+          <i class="fas fa-file-pdf"></i> Xem & Xuất PDF
+        </button>
+        <button class="btn btn-primary" onclick="submitOrderProcess()">
+          <i class="fas fa-paper-plane"></i> Gửi Đơn Đặt Hàng
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB: HISTORY -->
+    <div id="historyTab" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-history"></i> Lịch Sử Đơn Hàng</h3>
+          <button class="btn btn-outline" onclick="loadOrderHistory()">
+            <i class="fas fa-sync-alt"></i> Làm mới
+          </button>
+        </div>
+        <div id="historyArea">
+          <div style="
                 text-align: center;
                 padding: 30px;
                 color: var(--text-light);
-              "
-            >
-              Đang tải dữ liệu...
+              ">
+            Đang tải dữ liệu...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: RECEIVING -->
+    <div id="receivingTab" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-truck-loading"></i> NHẬP HÀNG VÀO KHO</h3>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Chọn Mã Đơn Hàng (PO)</label>
+            <input id="receiveOrderSearch" list="receiveOrderList" placeholder="Tìm mã PO..."
+              onchange="onReceiveOrderChange(this.value)">
+            <datalist id="receiveOrderList"></datalist>
+          </div>
+          <div class="form-group">
+            <label>Ngày Nhập Kho</label>
+            <input type="date" id="receivingDate">
+          </div>
+          <div class="form-group" style="grid-column: span 1">
+            <label>Người Nhập Hàng</label>
+            <input id="receiverName" placeholder="Họ và tên người nhận...">
+          </div>
+          <div class="form-group" style="grid-column: span 1">
+            <label>Đợt Nhập Hàng</label>
+            <input id="receiveBatch" placeholder="VD: Đợt 1, Lần 1...">
+          </div>
+        </div>
+
+        <div id="poSummaryArea" style="margin-top: 20px; display: none;">
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 15px;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+              <div>
+                <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">NHÀ CUNG CẤP</span>
+                <span id="summaryPartner" style="font-weight: 700; color: #151c32;">-</span>
+              </div>
+              <div>
+                <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">NGƯỜI LẬP PO</span>
+                <span id="summaryCreator" style="font-weight: 700; color: #151c32;">-</span>
+              </div>
+              <div>
+                <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">NGÀY LẬP PO</span>
+                <span id="summaryDate" style="font-weight: 700; color: #151c32;">-</span>
+              </div>
+              <div>
+                <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">PO THÁNG</span>
+                <span id="summaryPOMonth" style="font-weight: 700; color: #151c32;">-</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- TAB: RECEIVING -->
-      <div id="receivingTab" class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-truck-loading"></i> NHẬP HÀNG VÀO KHO</h3>
+      <div id="receivingItemsArea">
+        <!-- Area for rendering PO items for receipt -->
+      </div>
+
+      <div class="floating-actions" id="receivingActions" style="display:none">
+        <button class="btn btn-primary" onclick="submitReceivingProcess()">
+          <i class="fas fa-save"></i> Xác Nhận Nhập Hàng
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB: BOM CALCULATOR -->
+    <div id="bomTab" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-boxes"></i> CẤP PHÁT PHỤ LIỆU (BOM)</h3>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Chọn Đơn Hàng (PO) <span style="color: var(--danger)">*</span></label>
+            <input id="bomPOSearch" list="bomPOList" placeholder="Tìm mã PO..."
+              onchange="onBomPOChange(this.value)">
+            <datalist id="bomPOList"></datalist>
           </div>
-          <div class="grid-2">
-            <div class="form-group">
-              <label>Chọn Mã Đơn Hàng (PO)</label>
-              <input id="receiveOrderSearch" list="receiveOrderList" placeholder="Tìm mã PO..." onchange="onReceiveOrderChange(this.value)">
-              <datalist id="receiveOrderList"></datalist>
-            </div>
-            <div class="form-group">
-              <label>Ngày Nhập Kho</label>
-              <input type="date" id="receivingDate">
-            </div>
-            <div class="form-group" style="grid-column: span 1">
-              <label>Người Nhập Hàng</label>
-              <input id="receiverName" placeholder="Họ và tên người nhận...">
-            </div>
-            <div class="form-group" style="grid-column: span 1">
-              <label>Đợt Nhập Hàng</label>
-              <input id="receiveBatch" placeholder="VD: Đợt 1, Lần 1...">
-            </div>
+          <div class="form-group">
+            <label>Loại Sản Phẩm (BOM) <span style="color: var(--danger)">*</span></label>
+            <select id="bomProductType" onchange="onBomTypeChange()">
+              <option value="">-- Chọn loại sản phẩm --</option>
+              <option value="POLO">Áo Polo</option>
+              <option value="TSHIRT">Áo T-Shirt</option>
+              <option value="SHIRT">Sơ Mi</option>
+              <option value="JACKET">Áo Khoác</option>
+              <option value="LEN">Áo Len</option>
+              <option value="SHORTS">Quần Short</option>
+              <option value="QUANDAI">Quần Dài / Kaki</option>
+              <option value="JEANS">Quần Jeans</option>
+              <option value="BOXER">Boxer</option>
+            </select>
           </div>
-          
-          <div id="poSummaryArea" style="margin-top: 20px; display: none;">
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 15px;">
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                <div>
-                  <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">NHÀ CUNG CẤP</span>
-                  <span id="summaryPartner" style="font-weight: 700; color: #151c32;">-</span>
-                </div>
-                <div>
-                  <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">NGƯỜI LẬP PO</span>
-                  <span id="summaryCreator" style="font-weight: 700; color: #151c32;">-</span>
-                </div>
-                <div>
-                  <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">NGÀY LẬP PO</span>
-                  <span id="summaryDate" style="font-weight: 700; color: #151c32;">-</span>
-                </div>
-                <div>
-                  <span style="display: block; font-size: 0.75rem; color: #166534; font-weight: 600;">PO THÁNG</span>
-                  <span id="summaryPOMonth" style="font-weight: 700; color: #151c32;">-</span>
-                </div>
+        </div>
+
+        <!-- PO Summary Banner -->
+        <div id="bomPOSummary" style="display:none; margin-top:15px;">
+          <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:15px;">
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px;">
+              <div>
+                <span style="display:block; font-size:0.75rem; color:#166534; font-weight:600;">MÃ ĐƠN</span>
+                <span id="bomSummaryPO" style="font-weight:700; color:#151c32;">-</span>
+              </div>
+              <div>
+                <span style="display:block; font-size:0.75rem; color:#166534; font-weight:600;">NHÀ CUNG CẤP</span>
+                <span id="bomSummaryPartner" style="font-weight:700; color:#151c32;">-</span>
+              </div>
+              <div>
+                <span style="display:block; font-size:0.75rem; color:#166534; font-weight:600;">NGƯỜI LẬP</span>
+                <span id="bomSummaryCreator" style="font-weight:700; color:#151c32;">-</span>
+              </div>
+              <div>
+                <span style="display:block; font-size:0.75rem; color:#166534; font-weight:600;">PO THÁNG</span>
+                <span id="bomSummaryMonth" style="font-weight:700; color:#151c32;">-</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="receivingItemsArea">
-           <!-- Area for rendering PO items for receipt -->
-        </div>
+        <!-- PO Products Detail (auto-loaded) -->
+        <div id="bomPOProductsArea" style="margin-top:20px; display:none;">
+          <hr style="border:0; border-top: 1px dashed var(--border); margin: 5px 0 20px;">
+          <label style="margin-bottom:10px; font-weight:600;"><i class="fas fa-list" style="color:var(--accent)"></i> Sản phẩm trong đơn hàng</label>
+          <div id="bomPOProductsList"></div>
 
-        <div class="floating-actions" id="receivingActions" style="display:none">
-          <button class="btn btn-primary" onclick="submitReceivingProcess()">
-            <i class="fas fa-save"></i> Xác Nhận Nhập Hàng
-          </button>
+          <div style="display: flex; align-items: center; gap: 15px; margin-top: 20px; padding: 12px 16px; background: #f0fdf4; border-radius: 8px; border: 1px solid #bbf7d0;">
+            <i class="fas fa-calculator" style="font-size: 1.3rem; color: #166534;"></i>
+            <span style="font-weight: 700; color: #166534; font-size: 1.1rem;">TỔNG SỐ LƯỢNG ĐƠN: <span id="bomTotalQty" style="color: var(--primary);">0</span> PCS</span>
+          </div>
+
+          <div style="text-align: right; margin-top: 20px;">
+            <button class="btn btn-accent" onclick="calculateBOM()">
+              <i class="fas fa-calculator"></i> Tính Toán Phụ Liệu
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div id="bomResultArea">
+        <!-- BOM calculation results will be rendered here -->
       </div>
     </div>
 
-    <script>
-      /* ================= GLOBAL STATE ================= */
-      let orderItems = [];
-      let isEditMode = false;
-      let allPartnersData = [];
-      let allPOData = [];
-      let allOrdersHistory = [];
-      let allImagesData = [];
-      let fabricMap = {};
-      // priceMap: key = STYLE NAME (uppercase), value = { orgCost, vatCost, factory, tabName }
-      let priceMap = {};
-      let sizeConfigRows = [
-        { size: "S", qty: 0 },
-        { size: "M", qty: 0 },
-        { size: "L", qty: 0 },
-        { size: "XL", qty: 0 },
-      ];
+  </div>
 
-      /* ================= INIT ================= */
-      document.addEventListener("DOMContentLoaded", function () {
-        checkAuth(); // Kiểm tra đăng nhập ngay khi load
-        initDateFields();
-        renderSizeRows();
-        loadInitData();
-        loadPartnersFromSheet();
-        loadPODataFromSheet();
-        loadImagesFromSheet();
-        loadFactoryTabs();
-        document.getElementById("color").addEventListener("input", function() { 
-          autoFillNPL(null);
-          if (typeof autoFillImage === 'function') autoFillImage(null, this.value);
-        });
+  <script>
+    /* ================= GLOBAL STATE ================= */
+    let orderItems = [];
+    let isEditMode = false;
+    let allPartnersData = [];
+    let allPOData = [];
+    let allOrdersHistory = [];
+    let allImagesData = [];
+    let allBOMData = {}; // key = product type, value = array of NPL items
+    let bomPOItems = []; // loaded PO items for BOM calculation
+    let fabricMap = {};
+    // priceMap: key = STYLE NAME (uppercase), value = { orgCost, vatCost, factory, tabName }
+    let priceMap = {};
+    let sizeConfigRows = [
+      { size: "S", qty: 0 },
+      { size: "M", qty: 0 },
+      { size: "L", qty: 0 },
+      { size: "XL", qty: 0 },
+    ];
+
+    /* ================= INIT ================= */
+    document.addEventListener("DOMContentLoaded", function () {
+      checkAuth(); // Kiểm tra đăng nhập ngay khi load
+      initDateFields();
+      renderSizeRows();
+      loadInitData();
+      loadPartnersFromSheet();
+      loadPODataFromSheet();
+      loadImagesFromSheet();
+      loadFactoryTabs();
+      loadBOMFromSheet();
+      document.getElementById("color").addEventListener("input", function () {
+        autoFillNPL(null);
+        if (typeof autoFillImage === 'function') autoFillImage(null, this.value);
       });
+    });
 
-      /* ================= AUTHENTICATION ================= */
-      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzXHijHR98omLDJ0I6KbSw7j489SoNE_N0S_GuOFYCbsJ3L6gvQA-pbiATQLqzqZDf9tg/exec";
+    /* ================= AUTHENTICATION ================= */
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzXHijHR98omLDJ0I6KbSw7j489SoNE_N0S_GuOFYCbsJ3L6gvQA-pbiATQLqzqZDf9tg/exec";
 
-      function checkAuth() {
-        // Kiểm tra sessionStorage - nếu đã đăng nhập trong phiên này thì bỏ qua
-        if (sessionStorage.getItem('loggedIn') === 'true') {
-          document.getElementById('loginOverlay').style.display = 'none';
-          return;
-        }
-        // Chưa đăng nhập -> hiển thị màn hình đăng nhập
-        document.getElementById('loginOverlay').style.display = 'flex';
+    function checkAuth() {
+      // Kiểm tra sessionStorage - nếu đã đăng nhập trong phiên này thì bỏ qua
+      if (sessionStorage.getItem('loggedIn') === 'true') {
+        document.getElementById('loginOverlay').style.display = 'none';
+        return;
+      }
+      // Chưa đăng nhập -> hiển thị màn hình đăng nhập
+      document.getElementById('loginOverlay').style.display = 'flex';
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('loggedIn');
+      document.getElementById('loginOverlay').style.display = 'flex';
+      document.getElementById('loginUser').value = '';
+      document.getElementById('loginPass').value = '';
+    }
+
+    async function handleLogin() {
+      const u = document.getElementById('loginUser').value;
+      const p = document.getElementById('loginPass').value;
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('loginError');
+
+      if (!u || !p) {
+        err.innerText = "Vui lòng nhập đầy đủ thông tin!";
+        err.style.display = 'block';
+        return;
       }
 
-      function handleLogout() {
-        sessionStorage.removeItem('loggedIn');
-        document.getElementById('loginOverlay').style.display = 'flex';
-        document.getElementById('loginUser').value = '';
-        document.getElementById('loginPass').value = '';
-      }
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xác thực...';
+      err.style.display = 'none';
 
-      async function handleLogin() {
-        const u = document.getElementById('loginUser').value;
-        const p = document.getElementById('loginPass').value;
-        const btn = document.getElementById('loginBtn');
-        const err = document.getElementById('loginError');
-
-        if (!u || !p) {
-          err.innerText = "Vui lòng nhập đầy đủ thông tin!";
-          err.style.display = 'block';
-          return;
-        }
-
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xác thực...';
-        err.style.display = 'none';
-
-        try {
-          const response = await fetch(WEB_APP_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-              action: 'login',
-              username: u,
-              password: p
-            })
-          });
-          const result = await response.json();
-
-          if (result.success) {
-            // Đăng nhập thành công -> Lưu vào sessionStorage
-            sessionStorage.setItem('loggedIn', 'true');
-            document.getElementById('loginOverlay').style.display = 'none';
-          } else {
-            err.innerText = result.message || "Tài khoản hoặc mật khẩu không đúng!";
-            err.style.display = 'block';
-          }
-        } catch (e) {
-          err.innerText = "Lỗi kết nối máy chủ!";
-          err.style.display = 'block';
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
-        }
-      }
-
-      function handleLogout() {
-        if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-          // Chỉ cần load lại trang là sẽ tự động quay về màn hình Login
-          location.reload();
-        }
-      }
-
-
-      function initDateFields() {
-        const today = new Date().toISOString().split("T")[0];
-        document.getElementById("orderDate").value = today;
-        
-        // Tự động tạo mã đơn hàng duy nhất
-        const now = new Date();
-        const yy = now.getFullYear().toString().slice(-2);
-        const mm = String(now.getMonth() + 1).padStart(2, '0');
-        const dd = String(now.getDate()).padStart(2, '0');
-        const hh = String(now.getHours()).padStart(2, '0');
-        const min = String(now.getMinutes()).padStart(2, '0');
-        const sec = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById("orderNo").value = `PO${yy}${mm}${dd}-${hh}${min}${sec}`;
-        document.getElementById("receivingDate").value = today;
-        document.getElementById("poMonth").value = today.substring(0, 7);
-      }
-
-            function loadInitData() {
-        // Just show spinner for 1.5s to wait for data load
-        showSpinner("Đang tải dữ liệu...");
-        setTimeout(() => {
-          hideSpinner();
-        }, 1500);
-      }
-
-      function loadPartnersFromSheet() {
-        const script = document.createElement("script");
-        script.src = "https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=" + encodeURIComponent("Partners") + "&tqx=responseHandler:processSheetData";
-        document.body.appendChild(script);
-      }
-
-      function processSheetData(json) {
-        try {
-          const rows = json.table.rows;
-          const datalist = document.getElementById("partnerList");
-          if (!datalist) return;
-          let listHtml = "";
-          allPartnersData = [];
-
-          rows.forEach((row) => {
-            // Column C (index 2) is Trade Name
-            if (!row || !row.c || !row.c[2] || !row.c[2].v) return;
-            const tradeName = row.c[2].v;
-            
-            // Column B (index 1) is Company Name
-            const companyName = row.c[1] && row.c[1].v ? row.c[1].v : "";
-            
-            // Column D (index 3) is Legal Representative
-            const rep = row.c[3] && row.c[3].v ? row.c[3].v : "";
-            
-            // Column H (index 7) is Address
-            const address = row.c[7] && row.c[7].v ? row.c[7].v : "";
-            
-            // Column O (index 14) payment terms, Column P (index 15) delivery terms
-            const paymentTerms = row.c[14] && row.c[14].v ? row.c[14].v : (row.c[13] && row.c[13].v ? row.c[13].v : "");
-            const deliveryTerms = row.c[15] && row.c[15].v ? row.c[15].v : (row.c[14] && row.c[14].v ? row.c[14].v : "");
-
-            allPartnersData.push({
-              tradeName: tradeName,
-              companyName: companyName,
-              representative: rep,
-              address: address,
-              paymentTermsOrder: paymentTerms,
-              deliveryTerms: deliveryTerms
-            });
-
-            listHtml += `<option value="${tradeName}"></option>`;
-          });
-
-          datalist.innerHTML = listHtml;
-        } catch (e) {
-          console.error("Lỗi parse dữ liệu Partners:", e);
-        }
-      }
-
-      function onPartnerChange(val) {
-        const pd = allPartnersData.find(p => p.tradeName === val);
-        if (pd) {
-          document.getElementById("companyName").value = pd.companyName || "";
-          document.getElementById("partnerAddress").value = pd.address || "";
-        } else {
-          document.getElementById("companyName").value = "";
-          document.getElementById("partnerAddress").value = "";
-        }
-      }
-
-      /* ================= HISTORY ================= */
-
-      function loadPODataFromSheet() {
-        const script = document.createElement("script");
-        script.src = "https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=" + encodeURIComponent("mã PO") + "&tqx=responseHandler:processPOData";
-        document.body.appendChild(script);
-      }
-
-      function processPOData(json) {
-        // Sheet "mã PO" columns (NEW structure after update):
-        // c[0]=null (checkbox/marker), c[1]=STT (số hoặc mã PO nhóm e.g. VO5, PO88),
-        // c[2]=TÊN MẪU (tên sản phẩm e.g. "BASIC SYMBOL", "UGO", "VỚ CỔ CAO"),
-        // c[3]=MÃ SP (e.g. PO88, VO5, PO15),
-        // c[4]=XƯỞNG / MÀU (dòng header nhóm = tên xưởng; dòng SKU = tên màu),
-        // c[5]=KIỂU DÁNG / SIZE (dòng header nhóm = kiểu; dòng SKU = size)
-        try {
-          const rows = json.table.rows;
-          const datalist = document.getElementById("poList");
-          if (!datalist) return;
-          let listHtml = "";
-          allPOData = [];
-
-          // Build a lookup: maSP -> tenMau from HEADER rows only
-          // Header rows: c[1] is a numeric STT (e.g. 1, 2, 15)
-          // SKU rows: c[1] = PO code (same as c[3]), c[2] = variant code like PO103-TRANG-M
-          const tenMauMap = {};
-
-          // First pass: collect product names from header rows only
-          rows.forEach((row) => {
-            if (!row || !row.c) return;
-            try {
-              const c1Raw = row.c[1] ? row.c[1].v : null;
-              const c2 = row.c[2] ? row.c[2].v : "";
-              const c3 = row.c[3] ? row.c[3].v : "";
-              if (!c3 || c3.toString().trim() === '' || c3.toString().trim() === 'MÃ SP') return;
-              const maSP = c3.toString().trim();
-              // A header row has c[1] as a NUMBER (the STT index like 1, 2, 15...)
-              const isSTTRow = (c1Raw !== null && !isNaN(Number(c1Raw)) && Number(c1Raw) === Math.floor(Number(c1Raw)));
-              if (isSTTRow && c2 && c2.toString().trim() !== '') {
-                tenMauMap[maSP] = c2.toString().trim();
-              }
-            } catch(e) {}
-          });
-
-          rows.forEach((row) => {
-            if (!row || !row.c) return;
-            try {
-              const c1 = row.c[1] ? row.c[1].v : "";   // STT or PO group code
-              const c2 = row.c[2] ? row.c[2].v : "";   // TÊN MẪU or variant code
-              const c3 = row.c[3] ? row.c[3].v : "";   // MÃ SP
-              const c4 = row.c[4] ? row.c[4].v : "";   // MÀU (on SKU rows)
-              const c5 = row.c[5] ? row.c[5].v : "";   // SIZE (on SKU rows)
-
-              // Skip header/sub-header rows: c[3] = "MÃ SP" or empty
-              if (!c3 || c3.toString().trim() === '' || c3.toString().trim() === 'MÃ SP') return;
-
-              const maSP = c3.toString().trim();
-
-              // SKU rows: c[4] is color, c[5] is size — skip if no color
-              const mau = c4 ? c4.toString().trim() : '';
-              const size = c5 ? c5.toString().trim() : '';
-              if (!mau) return;
-
-              allPOData.push({
-                maSP: maSP,
-                mau: mau,
-                size: size,
-                tenMau: maSP + ' - ' + mau,
-                productName: '' // will be filled below
-              });
-            } catch (e) { }
-          });
-
-          // Attach product names from the first-pass map
-          allPOData.forEach(p => {
-            p.productName = tenMauMap[p.maSP] || '';
-          });
-
-          // Unique records by maSP only (one entry per product, not per color)
-          const seenProducts = new Set();
-          const uniqueProducts = [];
-          allPOData.forEach(p => {
-            if (!seenProducts.has(p.maSP)) {
-              seenProducts.add(p.maSP);
-              uniqueProducts.push(p);
-            }
-          });
-          // allPOData keeps all color variants for lookup purposes
-          // but datalist only shows one entry per product
-          uniqueProducts.sort((a, b) => a.maSP.localeCompare(b.maSP));
-          uniqueProducts.forEach(po => {
-            // Show "PO88 - BASIC SYMBOL" format
-            const label = po.productName ? `${po.maSP} - ${po.productName}` : po.maSP;
-            listHtml += `<option value="${label}"></option>`;
-          });
-          datalist.innerHTML = listHtml;
-        } catch (err) { console.error('processPOData error:', err); }
-      }
-
-      function loadImagesFromSheet() {
-        const script = document.createElement("script");
-        script.src = "https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=%E1%BA%A3nh%20s%E1%BA%A3n%20ph%E1%BA%A9m&tqx=responseHandler:processImagesData";
-        document.body.appendChild(script);
-      }
-
-      function driveViewToThumb(url) {
-        // Convert Google Drive uc?export=view or /file/d/ links to thumbnail URL
-        // which is reliably embeddable without login restrictions
-        if (!url) return url;
-        let fileId = null;
-        // Pattern 1: uc?export=view&id=FILE_ID
-        const m1 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-        if (m1) fileId = m1[1];
-        // Pattern 2: /file/d/FILE_ID/
-        if (!fileId) {
-          const m2 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-          if (m2) fileId = m2[1];
-        }
-        if (fileId) {
-          // Use Google's thumbnail endpoint — works without login for shared files
-          return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
-        }
-        return url; // fallback, return as-is
-      }
-
-      function processImagesData(json) {
-        // Sheet "ảnh sản phẩm" columns:
-        // c[0]=STT, c[1]=Style Name (SYMBOL), c[2]=Mã PO (PO88), c[3]=Màu,
-        // c[4]=Drive /file/d/ link, c[5]=uc?export=view link
-        try {
-          const rows = json.table.rows;
-          allImagesData = [];
-          rows.forEach((row, i) => {
-            if (!row || !row.c) return;
-            try {
-              const maSP = row.c[2] ? row.c[2].v.toString().trim() : "";  // PO code
-              const mau = row.c[3] ? row.c[3].v.toString().trim().toUpperCase() : "";  // Color
-              // Prefer c[5] (direct link), fallback to c[4] (view link)
-              const rawLink = (row.c[5] && row.c[5].v) ? row.c[5].v : (row.c[4] && row.c[4].v) ? row.c[4].v : "";
-              const link = driveViewToThumb(rawLink);
-              if (maSP && link && maSP !== 'MÃ PO') {
-                 allImagesData.push({ maSP, link, mau });
-              }
-            } catch(e) {}
-          });
-        } catch(err) { console.error('processImagesData error:', err); }
-      }
-
-      function loadFactoryTabs() {
-        // Factory tab columns:
-        // c[0]=STT, c[1]=PO Code, c[2]=PO Type, c[3]=STYLE NAME, c[4]=Style Code,
-        // c[5]=Category, c[6]=FABRIC, c[7]=COLOR, c[8]=Color Code,
-        // c[9]=FOB/Factory, c[10]=ORG COST (giá thuần), c[11]=COST+VAT
-        const factoryTabs = ["TALYNO", "ANH THƯ", "AN NGUYÊN", "LC", "GLX", "GIFT"];
-        let delay = 300;
-        factoryTabs.forEach((tab, index) => {
-          window[`processFactoryTab_${index}`] = function(json) {
-            try {
-              if (!json || !json.table || !json.table.rows) return;
-              const STYLE_NAME_IDX = 3;
-              const FABRIC_IDX     = 6;
-              const COLOR_IDX      = 7;
-              const FACTORY_IDX    = 9;   // FOB / Nhà máy
-              const ORG_COST_IDX   = 10;  // Giá thuần (chưa VAT)
-              const VAT_COST_IDX   = 11;  // Giá gồm VAT
-
-              json.table.rows.forEach(row => {
-                if (!row || !row.c) return;
-                const styleNameCel = row.c[STYLE_NAME_IDX];
-                const fabricCel    = row.c[FABRIC_IDX];
-                const colorCel     = row.c[COLOR_IDX];
-                const factoryCel   = row.c[FACTORY_IDX];
-                const orgCostCel   = row.c[ORG_COST_IDX];
-                const vatCostCel   = row.c[VAT_COST_IDX];
-
-                if (!styleNameCel || !styleNameCel.v) return;
-                const sName = styleNameCel.v.toString().trim().toUpperCase();
-                if (sName === 'STYLE NAME' || sName === 'TÊN SP' || sName === 'TÊN MẪU') return;
-
-                // Update fabricMap
-                if (fabricCel && fabricCel.v && colorCel && colorCel.v) {
-                  const fName = fabricCel.v.toString().trim();
-                  const cName = colorCel.v.toString().trim().toUpperCase();
-                  fabricMap[sName + '|' + cName] = fName;
-                }
-
-                // Update priceMap — keep LAST seen price for this style name per tab
-                // (last row = most recent order in the sheet)
-                const orgCost = orgCostCel && orgCostCel.v !== null && orgCostCel.v !== '' ? orgCostCel.v : null;
-                const vatCost = vatCostCel && vatCostCel.v !== null && vatCostCel.v !== '' ? vatCostCel.v : null;
-                if (orgCost !== null || vatCost !== null) {
-                  priceMap[sName] = {
-                    orgCost:  orgCost,
-                    vatCost:  vatCost,
-                    factory:  factoryCel && factoryCel.v ? factoryCel.v.toString().trim() : tab,
-                    tabName:  tab
-                  };
-                }
-              });
-            } catch(e) { console.error('Factory tab error (' + tab + '):', e); }
-          };
-
-          setTimeout(() => {
-            const script = document.createElement("script");
-            script.src = `https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=${encodeURIComponent(tab)}&tqx=responseHandler:processFactoryTab_${index}`;
-            document.body.appendChild(script);
-          }, delay);
-          delay += 400;
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'login',
+            username: u,
+            password: p
+          })
         });
+        const result = await response.json();
+
+        if (result.success) {
+          // Đăng nhập thành công -> Lưu vào sessionStorage
+          sessionStorage.setItem('loggedIn', 'true');
+          document.getElementById('loginOverlay').style.display = 'none';
+        } else {
+          err.innerText = result.message || "Tài khoản hoặc mật khẩu không đúng!";
+          err.style.display = 'block';
+        }
+      } catch (e) {
+        err.innerText = "Lỗi kết nối máy chủ!";
+        err.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
       }
+    }
 
-      function autoFillImage(poCode, colorName) {
-        const imgUrlInput = document.getElementById("imageUrl");
-        if (!imgUrlInput || allImagesData.length === 0) return;
-
-        let code = poCode ? poCode.toString().toUpperCase().trim() : "";
-        if (!code) {
-           const artVal = document.getElementById("artCode").value.trim();
-           code = artVal.split(" - ")[0].trim().toUpperCase();
-        }
-
-        let col = colorName ? colorName.toString().toUpperCase().trim() : "";
-        if (!col) {
-           col = document.getElementById("color").value.trim().toUpperCase();
-        }
-
-        if (!code) return;
-
-        let imgRecord = null;
-        if (col) {
-           imgRecord = allImagesData.find(img => img.maSP.toUpperCase() === code && img.mau === col);
-        }
-
-        if (!imgRecord) {
-           imgRecord = allImagesData.find(img => img.maSP.toUpperCase() === code && img.mau === 'TRẮNG');
-        }
-
-        if (!imgRecord) {
-           imgRecord = allImagesData.find(img => img.maSP.toUpperCase() === code);
-        }
-
-        if (imgRecord && imgRecord.link) {
-           imgUrlInput.value = imgRecord.link;
-        }
+    function handleLogout() {
+      if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+        // Chỉ cần load lại trang là sẽ tự động quay về màn hình Login
+        location.reload();
       }
+    }
 
-      function autoFillNPL(poObj) {
-         let po = poObj;
-         // If no po object, try to look it up from the artCode field
-         if (!po || !po.maSP) {
-           const inputVal = document.getElementById("artCode").value.trim();
-           if (!inputVal) return;
-           const parts = inputVal.split(" - ");
-           const searchCode = parts[0].trim();
-           const searchColor = parts.length > 1 ? parts[1].trim().toUpperCase() : '';
-           if (searchColor) {
-             po = allPOData.find(p => p.maSP.toUpperCase() === searchCode.toUpperCase() && p.mau.toUpperCase() === searchColor);
-           }
-           if (!po) po = allPOData.find(p => p.maSP.toUpperCase() === searchCode.toUpperCase());
-         }
-         if (!po) return;
 
-         // Color to search: from color field, or from po.mau from mã PO sheet
-         const colorFieldVal = document.getElementById("color").value.trim().toUpperCase();
-         const colorToSearch = colorFieldVal || (po.mau ? po.mau.toUpperCase() : '');
+    function initDateFields() {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("orderDate").value = today;
 
-         let isMapEmpty = Object.keys(fabricMap).length === 0;
-         let matchedFabric = null;
+      // Tự động tạo mã đơn hàng duy nhất
+      const now = new Date();
+      const yy = now.getFullYear().toString().slice(-2);
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const hh = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const sec = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById("orderNo").value = `PO${yy}${mm}${dd}-${hh}${min}${sec}`;
+      document.getElementById("receivingDate").value = today;
+      document.getElementById("poMonth").value = today.substring(0, 7);
+    }
 
-         if (!isMapEmpty && colorToSearch) {
-             // Try exact match: STYLE NAME | COLOR
-             for (const key in fabricMap) {
-                 const pipeIdx = key.lastIndexOf('|');
-                 const kName = key.substring(0, pipeIdx).trim().toUpperCase();
-                 const kColor = key.substring(pipeIdx + 1).trim().toUpperCase();
+    function loadInitData() {
+      // Just show spinner for 1.5s to wait for data load
+      showSpinner("Đang tải dữ liệu...");
+      setTimeout(() => {
+        hideSpinner();
+      }, 1500);
+    }
 
-                 // Color fuzzy match: contains each other
-                 const colorMatch = kColor === colorToSearch ||
-                                    kColor.includes(colorToSearch) ||
-                                    colorToSearch.includes(kColor);
+    function loadPartnersFromSheet() {
+      const script = document.createElement("script");
+      script.src = "https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=" + encodeURIComponent("Partners") + "&tqx=responseHandler:processSheetData";
+      document.body.appendChild(script);
+    }
 
-                 if (colorMatch) {
-                     matchedFabric = fabricMap[key];
-                     break;
-                 }
-             }
-         } else if (!isMapEmpty) {
-             // No color: just return first fabric entry (will be overridden when color typed)
-             const firstKey = Object.keys(fabricMap)[0];
-             if (firstKey) matchedFabric = fabricMap[firstKey];
-         }
+    function processSheetData(json) {
+      try {
+        const rows = json.table.rows;
+        const datalist = document.getElementById("partnerList");
+        if (!datalist) return;
+        let listHtml = "";
+        allPartnersData = [];
 
-         let finalVal = matchedFabric;
-         if (!finalVal) {
-             if (isMapEmpty) finalVal = "(Đang tải data vải từ xưởng, vui lòng thử lại sau ít giây)";
-             else finalVal = "(Chưa tìm thấy thông tin vải - nhập tay)";
-         }
-         document.getElementById("nplInfo").value = finalVal;
+        rows.forEach((row) => {
+          // Column C (index 2) is Trade Name
+          if (!row || !row.c || !row.c[2] || !row.c[2].v) return;
+          const tradeName = row.c[2].v;
+
+          // Column B (index 1) is Company Name
+          const companyName = row.c[1] && row.c[1].v ? row.c[1].v : "";
+
+          // Column D (index 3) is Legal Representative
+          const rep = row.c[3] && row.c[3].v ? row.c[3].v : "";
+
+          // Column H (index 7) is Address
+          const address = row.c[7] && row.c[7].v ? row.c[7].v : "";
+
+          // Column O (index 14) payment terms, Column P (index 15) delivery terms
+          const paymentTerms = row.c[14] && row.c[14].v ? row.c[14].v : (row.c[13] && row.c[13].v ? row.c[13].v : "");
+          const deliveryTerms = row.c[15] && row.c[15].v ? row.c[15].v : (row.c[14] && row.c[14].v ? row.c[14].v : "");
+
+          allPartnersData.push({
+            tradeName: tradeName,
+            companyName: companyName,
+            representative: rep,
+            address: address,
+            paymentTermsOrder: paymentTerms,
+            deliveryTerms: deliveryTerms
+          });
+
+          listHtml += `<option value="${tradeName}"></option>`;
+        });
+
+        datalist.innerHTML = listHtml;
+      } catch (e) {
+        console.error("Lỗi parse dữ liệu Partners:", e);
       }
+    }
 
-      function autoFillPrice(productName) {
-        const box = document.getElementById('priceRefBox');
-        const txt = document.getElementById('priceRefText');
-        if (!box || !txt) return;
+    function onPartnerChange(val) {
+      const pd = allPartnersData.find(p => p.tradeName === val);
+      if (pd) {
+        document.getElementById("companyName").value = pd.companyName || "";
+        document.getElementById("partnerAddress").value = pd.address || "";
+      } else {
+        document.getElementById("companyName").value = "";
+        document.getElementById("partnerAddress").value = "";
+      }
+    }
 
-        if (!productName) {
-          txt.innerHTML = '— Chọn sản phẩm để xem giá tham chiếu';
-          txt.style.color = 'var(--text-light)';
-          return;
-        }
+    /* ================= HISTORY ================= */
 
-        const key = productName.toString().trim().toUpperCase();
-        const priceInfo = priceMap[key];
+    function loadPODataFromSheet() {
+      const script = document.createElement("script");
+      script.src = "https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=" + encodeURIComponent("mã PO") + "&tqx=responseHandler:processPOData";
+      document.body.appendChild(script);
+    }
 
-        if (!priceInfo) {
-          // Try partial match
-          const partialKey = Object.keys(priceMap).find(k => k.includes(key) || key.includes(k));
-          if (partialKey) {
-            return autoFillPrice(partialKey); // recurse with matched key
+    function processPOData(json) {
+      // Sheet "mã PO" columns (NEW structure after update):
+      // c[0]=null (checkbox/marker), c[1]=STT (số hoặc mã PO nhóm e.g. VO5, PO88),
+      // c[2]=TÊN MẪU (tên sản phẩm e.g. "BASIC SYMBOL", "UGO", "VỚ CỔ CAO"),
+      // c[3]=MÃ SP (e.g. PO88, VO5, PO15),
+      // c[4]=XƯỞNG / MÀU (dòng header nhóm = tên xưởng; dòng SKU = tên màu),
+      // c[5]=KIỂU DÁNG / SIZE (dòng header nhóm = kiểu; dòng SKU = size)
+      try {
+        const rows = json.table.rows;
+        const datalist = document.getElementById("poList");
+        if (!datalist) return;
+        let listHtml = "";
+        allPOData = [];
+
+        // Build a lookup: maSP -> tenMau from HEADER rows only
+        // Header rows: c[1] is a numeric STT (e.g. 1, 2, 15)
+        // SKU rows: c[1] = PO code (same as c[3]), c[2] = variant code like PO103-TRANG-M
+        const tenMauMap = {};
+
+        // First pass: collect product names from header rows only
+        rows.forEach((row) => {
+          if (!row || !row.c) return;
+          try {
+            const c1Raw = row.c[1] ? row.c[1].v : null;
+            const c2 = row.c[2] ? row.c[2].v : "";
+            const c3 = row.c[3] ? row.c[3].v : "";
+            if (!c3 || c3.toString().trim() === '' || c3.toString().trim() === 'MÃ SP') return;
+            const maSP = c3.toString().trim();
+            // A header row has c[1] as a NUMBER (the STT index like 1, 2, 15...)
+            const isSTTRow = (c1Raw !== null && !isNaN(Number(c1Raw)) && Number(c1Raw) === Math.floor(Number(c1Raw)));
+            if (isSTTRow && c2 && c2.toString().trim() !== '') {
+              tenMauMap[maSP] = c2.toString().trim();
+            }
+          } catch (e) { }
+        });
+
+        rows.forEach((row) => {
+          if (!row || !row.c) return;
+          try {
+            const c1 = row.c[1] ? row.c[1].v : "";   // STT or PO group code
+            const c2 = row.c[2] ? row.c[2].v : "";   // TÊN MẪU or variant code
+            const c3 = row.c[3] ? row.c[3].v : "";   // MÃ SP
+            const c4 = row.c[4] ? row.c[4].v : "";   // MÀU (on SKU rows)
+            const c5 = row.c[5] ? row.c[5].v : "";   // SIZE (on SKU rows)
+
+            // Skip header/sub-header rows: c[3] = "MÃ SP" or empty
+            if (!c3 || c3.toString().trim() === '' || c3.toString().trim() === 'MÃ SP') return;
+
+            const maSP = c3.toString().trim();
+
+            // SKU rows: c[4] is color, c[5] is size — skip if no color
+            const mau = c4 ? c4.toString().trim() : '';
+            const size = c5 ? c5.toString().trim() : '';
+            if (!mau) return;
+
+            allPOData.push({
+              maSP: maSP,
+              mau: mau,
+              size: size,
+              tenMau: maSP + ' - ' + mau,
+              productName: '' // will be filled below
+            });
+          } catch (e) { }
+        });
+
+        // Attach product names from the first-pass map
+        allPOData.forEach(p => {
+          p.productName = tenMauMap[p.maSP] || '';
+        });
+
+        // Unique records by maSP only (one entry per product, not per color)
+        const seenProducts = new Set();
+        const uniqueProducts = [];
+        allPOData.forEach(p => {
+          if (!seenProducts.has(p.maSP)) {
+            seenProducts.add(p.maSP);
+            uniqueProducts.push(p);
           }
-          txt.innerHTML = '<i class="fas fa-info-circle"></i> Chưa có giá trong dữ liệu nhà máy';
-          txt.style.color = 'var(--text-light)';
-          return;
-        }
+        });
+        // allPOData keeps all color variants for lookup purposes
+        // but datalist only shows one entry per product
+        uniqueProducts.sort((a, b) => a.maSP.localeCompare(b.maSP));
+        uniqueProducts.forEach(po => {
+          // Show "PO88 - BASIC SYMBOL" format
+          const label = po.productName ? `${po.maSP} - ${po.productName}` : po.maSP;
+          listHtml += `<option value="${label}"></option>`;
+        });
+        datalist.innerHTML = listHtml;
+      } catch (err) { console.error('processPOData error:', err); }
+    }
 
-        const fmt = (v) => {
-          if (v === null || v === undefined || v === '') return '—';
-          const num = parseFloat(v.toString().replace(/[^\d.]/g, ''));
-          if (isNaN(num)) return v;
-          return num.toLocaleString('vi-VN') + ' đ';
+    function loadImagesFromSheet() {
+      const script = document.createElement("script");
+      script.src = "https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=%E1%BA%A3nh%20s%E1%BA%A3n%20ph%E1%BA%A9m&tqx=responseHandler:processImagesData";
+      document.body.appendChild(script);
+    }
+
+    function driveViewToThumb(url) {
+      // Convert Google Drive uc?export=view or /file/d/ links to thumbnail URL
+      // which is reliably embeddable without login restrictions
+      if (!url) return url;
+      let fileId = null;
+      // Pattern 1: uc?export=view&id=FILE_ID
+      const m1 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (m1) fileId = m1[1];
+      // Pattern 2: /file/d/FILE_ID/
+      if (!fileId) {
+        const m2 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (m2) fileId = m2[1];
+      }
+      if (fileId) {
+        // Use Google's thumbnail endpoint — works without login for shared files
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
+      }
+      return url; // fallback, return as-is
+    }
+
+    function processImagesData(json) {
+      // Sheet "ảnh sản phẩm" columns:
+      // c[0]=STT, c[1]=Style Name (SYMBOL), c[2]=Mã PO (PO88), c[3]=Màu,
+      // c[4]=Drive /file/d/ link, c[5]=uc?export=view link
+      try {
+        const rows = json.table.rows;
+        allImagesData = [];
+        rows.forEach((row, i) => {
+          if (!row || !row.c) return;
+          try {
+            const maSP = row.c[2] ? row.c[2].v.toString().trim() : "";  // PO code
+            const mau = row.c[3] ? row.c[3].v.toString().trim().toUpperCase() : "";  // Color
+            // Prefer c[5] (direct link), fallback to c[4] (view link)
+            const rawLink = (row.c[5] && row.c[5].v) ? row.c[5].v : (row.c[4] && row.c[4].v) ? row.c[4].v : "";
+            const link = driveViewToThumb(rawLink);
+            if (maSP && link && maSP !== 'MÃ PO') {
+              allImagesData.push({ maSP, link, mau });
+            }
+          } catch (e) { }
+        });
+      } catch (err) { console.error('processImagesData error:', err); }
+    }
+
+    function loadFactoryTabs() {
+      // Factory tab columns:
+      // c[0]=STT, c[1]=PO Code, c[2]=PO Type, c[3]=STYLE NAME, c[4]=Style Code,
+      // c[5]=Category, c[6]=FABRIC, c[7]=COLOR, c[8]=Color Code,
+      // c[9]=FOB/Factory, c[10]=ORG COST (giá thuần), c[11]=COST+VAT
+      const factoryTabs = ["TALYNO", "ANH THƯ", "AN NGUYÊN", "LC", "GLX", "GIFT"];
+      let delay = 300;
+      factoryTabs.forEach((tab, index) => {
+        window[`processFactoryTab_${index}`] = function (json) {
+          try {
+            if (!json || !json.table || !json.table.rows) return;
+            const STYLE_NAME_IDX = 3;
+            const FABRIC_IDX = 6;
+            const COLOR_IDX = 7;
+            const FACTORY_IDX = 9;   // FOB / Nhà máy
+            const ORG_COST_IDX = 10;  // Giá thuần (chưa VAT)
+            const VAT_COST_IDX = 11;  // Giá gồm VAT
+
+            json.table.rows.forEach(row => {
+              if (!row || !row.c) return;
+              const styleNameCel = row.c[STYLE_NAME_IDX];
+              const fabricCel = row.c[FABRIC_IDX];
+              const colorCel = row.c[COLOR_IDX];
+              const factoryCel = row.c[FACTORY_IDX];
+              const orgCostCel = row.c[ORG_COST_IDX];
+              const vatCostCel = row.c[VAT_COST_IDX];
+
+              if (!styleNameCel || !styleNameCel.v) return;
+              const sName = styleNameCel.v.toString().trim().toUpperCase();
+              if (sName === 'STYLE NAME' || sName === 'TÊN SP' || sName === 'TÊN MẪU') return;
+
+              // Update fabricMap
+              if (fabricCel && fabricCel.v && colorCel && colorCel.v) {
+                const fName = fabricCel.v.toString().trim();
+                const cName = colorCel.v.toString().trim().toUpperCase();
+                fabricMap[sName + '|' + cName] = fName;
+              }
+
+              // Update priceMap — keep LAST seen price for this style name per tab
+              // (last row = most recent order in the sheet)
+              const orgCost = orgCostCel && orgCostCel.v !== null && orgCostCel.v !== '' ? orgCostCel.v : null;
+              const vatCost = vatCostCel && vatCostCel.v !== null && vatCostCel.v !== '' ? vatCostCel.v : null;
+              if (orgCost !== null || vatCost !== null) {
+                priceMap[sName] = {
+                  orgCost: orgCost,
+                  vatCost: vatCost,
+                  factory: factoryCel && factoryCel.v ? factoryCel.v.toString().trim() : tab,
+                  tabName: tab
+                };
+              }
+            });
+          } catch (e) { console.error('Factory tab error (' + tab + '):', e); }
         };
 
-        txt.innerHTML = [
-          `<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:4px;font-size:0.8rem;font-weight:600">${priceInfo.tabName}</span>`,
-          `<span style="color:var(--text)">Giá thuần: <strong style="color:var(--primary)">${fmt(priceInfo.orgCost)}</strong></span>`,
-          `<span style="color:var(--text-light)">|</span>`,
-          `<span style="color:var(--text)">Giá + VAT: <strong style="color:var(--accent)">${fmt(priceInfo.vatCost)}</strong></span>`
-        ].join(' ');
-        txt.style.color = 'inherit';
-
-        // Auto-fill the unit price field with the VAT included price ONLY if it's currently empty
-        if (priceInfo.vatCost !== null && priceInfo.vatCost !== undefined && priceInfo.vatCost !== '') {
-           const num = parseFloat(priceInfo.vatCost.toString().replace(/[^\d.]/g, ''));
-           if (!isNaN(num)) {
-               const priceInput = document.getElementById('unitPriceDisplay');
-               if (priceInput && (!priceInput.value || priceInput.value.trim() === '')) {
-                   priceInput.value = num; // formatPriceInput will format it
-                   if (typeof formatPriceInput === 'function') {
-                       formatPriceInput(priceInput);
-                   }
-               }
-           }
-        }
-      }
-
-      function onArtCodeChange(value) {
-         if (!value) return;
-
-         // The dropdown value is now "PO88 - BASIC SYMBOL" (maSP - productName)
-         // Extract just the PO code (the part before the first " - ")
-         const parts = value.split(" - ");
-         const searchCode = parts[0].trim();
-
-         // Find by maSP only (get first color variant for lookup purposes)
-         const po = allPOData.find(p => p.maSP.toUpperCase() === searchCode.toUpperCase());
-
-         if (po) {
-            // Fill Art Code field with just the PO code
-            document.getElementById("artCode").value = po.maSP;
-            // Auto-fill product name from TÊN MẪU (e.g. "BASIC SYMBOL", "UGO")
-            // Only auto-fill if the field is currently empty
-            if (!document.getElementById("productName").value) {
-               document.getElementById("productName").value = po.productName || po.maSP;
-            }
-            // Auto-fill price reference from factory data
-            autoFillPrice(po.productName || '');
-            // NOTE: Color field is left empty — user enters it manually
-            // NPL will auto-fill when user types color (color input event listener)
-
-            // Auto-fill NPL if color already typed (pass po for maSP lookup)
-            autoFillNPL(po);
-
-            // Auto-fill image based on PO and current color
-            if (typeof autoFillImage === 'function') autoFillImage(po.maSP, null);
-         }
-      }
-
-      /* ================= TABS ================= */
-      function switchTab(tabId, el) {
-        document
-          .querySelectorAll(".tab-content")
-          .forEach((t) => t.classList.remove("active"));
-        document
-          .querySelectorAll(".nav-item")
-          .forEach((t) => t.classList.remove("active"));
-
-        document.getElementById(tabId).classList.add("active");
-        el.classList.add("active");
-
-        if (tabId === "historyTab") {
-          loadOrderHistory();
-        }
-        if (tabId === "receivingTab") {
-          loadPOHistoryForReceiving();
-        }
-      }
-
-      /* ================= UI UTILS ================= */
-      function sortSizes(sizes) {
-        // Predefined garment size order
-        const sizeOrder = ['XXS', 'XS', 'S', 'M', 'L', 'XL', '2XL', 'XXL', '3XL', 'XXXL', '4XL', '5XL', 'FREE'];
-        function getSizeRank(s) {
-          const upper = s.toUpperCase().trim();
-          const idx = sizeOrder.indexOf(upper);
-          if (idx >= 0) return idx; // known garment size
-          const num = parseFloat(s);
-          if (!isNaN(num)) return 100 + num; // numeric size (28, 29, 30...)
-          return 200; // unknown → sort last
-        }
-        return sizes.slice().sort((a, b) => getSizeRank(a) - getSizeRank(b));
-      }
-
-      function formatMoney(v) {
-        return Number(v || 0).toLocaleString("vi-VN");
-      }
-
-      function formatPriceInput(el) {
-        let val = el.value.replace(/[^0-9]/g, "");
-        document.getElementById("unitPrice").value = val;
-        el.value = val ? Number(val).toLocaleString("vi-VN") : "";
-      }
-
-      function showToast(msg, type = "success") {
-        const container = document.getElementById("toastContainer");
-        const toast = document.createElement("div");
-        toast.className = `toast ${type}`;
-
-        const icon =
-          type === "success" ? "fa-check-circle" : "fa-exclamation-circle";
-        toast.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`;
-
-        container.appendChild(toast);
-
-        setTimeout(() => toast.classList.add("show"), 10);
         setTimeout(() => {
-          toast.classList.remove("show");
-          setTimeout(() => toast.remove(), 300);
-        }, 3000);
+          const script = document.createElement("script");
+          script.src = `https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=${encodeURIComponent(tab)}&tqx=responseHandler:processFactoryTab_${index}`;
+          document.body.appendChild(script);
+        }, delay);
+        delay += 400;
+      });
+    }
+
+    function autoFillImage(poCode, colorName) {
+      const imgUrlInput = document.getElementById("imageUrl");
+      if (!imgUrlInput || allImagesData.length === 0) return;
+
+      let code = poCode ? poCode.toString().toUpperCase().trim() : "";
+      if (!code) {
+        const artVal = document.getElementById("artCode").value.trim();
+        code = artVal.split(" - ")[0].trim().toUpperCase();
       }
 
-      function showSpinner(text) {
-        document.getElementById("spinnerText").innerText =
-          text || "Đang xử lý...";
-        document.getElementById("spinner").style.display = "flex";
-      }
-      function hideSpinner() {
-        document.getElementById("spinner").style.display = "none";
+      let col = colorName ? colorName.toString().toUpperCase().trim() : "";
+      if (!col) {
+        col = document.getElementById("color").value.trim().toUpperCase();
       }
 
-      /* ================= SIZE MANAGEMENT ================= */
-      function addSizeRow() {
-        sizeConfigRows.push({ size: "", qty: 0 });
-        renderSizeRows();
+      if (!code) return;
+
+      let imgRecord = null;
+      if (col) {
+        imgRecord = allImagesData.find(img => img.maSP.toUpperCase() === code && img.mau === col);
       }
 
-      function removeSizeRow(index) {
-        sizeConfigRows.splice(index, 1);
-        renderSizeRows();
+      if (!imgRecord) {
+        imgRecord = allImagesData.find(img => img.maSP.toUpperCase() === code && img.mau === 'TRẮNG');
       }
 
-      function renderSizeRows() {
-        const container = document.getElementById("sizeRows");
-        container.innerHTML = sizeConfigRows
-          .map(
-            (r, i) => `
+      if (!imgRecord) {
+        imgRecord = allImagesData.find(img => img.maSP.toUpperCase() === code);
+      }
+
+      if (imgRecord && imgRecord.link) {
+        imgUrlInput.value = imgRecord.link;
+      }
+    }
+
+    function autoFillNPL(poObj) {
+      let po = poObj;
+      // If no po object, try to look it up from the artCode field
+      if (!po || !po.maSP) {
+        const inputVal = document.getElementById("artCode").value.trim();
+        if (!inputVal) return;
+        const parts = inputVal.split(" - ");
+        const searchCode = parts[0].trim();
+        const searchColor = parts.length > 1 ? parts[1].trim().toUpperCase() : '';
+        if (searchColor) {
+          po = allPOData.find(p => p.maSP.toUpperCase() === searchCode.toUpperCase() && p.mau.toUpperCase() === searchColor);
+        }
+        if (!po) po = allPOData.find(p => p.maSP.toUpperCase() === searchCode.toUpperCase());
+      }
+      if (!po) return;
+
+      // Color to search: from color field, or from po.mau from mã PO sheet
+      const colorFieldVal = document.getElementById("color").value.trim().toUpperCase();
+      const colorToSearch = colorFieldVal || (po.mau ? po.mau.toUpperCase() : '');
+
+      let isMapEmpty = Object.keys(fabricMap).length === 0;
+      let matchedFabric = null;
+
+      if (!isMapEmpty && colorToSearch) {
+        // Try exact match: STYLE NAME | COLOR
+        for (const key in fabricMap) {
+          const pipeIdx = key.lastIndexOf('|');
+          const kName = key.substring(0, pipeIdx).trim().toUpperCase();
+          const kColor = key.substring(pipeIdx + 1).trim().toUpperCase();
+
+          // Color fuzzy match: contains each other
+          const colorMatch = kColor === colorToSearch ||
+            kColor.includes(colorToSearch) ||
+            colorToSearch.includes(kColor);
+
+          if (colorMatch) {
+            matchedFabric = fabricMap[key];
+            break;
+          }
+        }
+      } else if (!isMapEmpty) {
+        // No color: just return first fabric entry (will be overridden when color typed)
+        const firstKey = Object.keys(fabricMap)[0];
+        if (firstKey) matchedFabric = fabricMap[firstKey];
+      }
+
+      let finalVal = matchedFabric;
+      if (!finalVal) {
+        if (isMapEmpty) finalVal = "(Đang tải data vải từ xưởng, vui lòng thử lại sau ít giây)";
+        else finalVal = "(Chưa tìm thấy thông tin vải - nhập tay)";
+      }
+      document.getElementById("nplInfo").value = finalVal;
+    }
+
+    function autoFillPrice(productName) {
+      const box = document.getElementById('priceRefBox');
+      const txt = document.getElementById('priceRefText');
+      if (!box || !txt) return;
+
+      if (!productName) {
+        txt.innerHTML = '— Chọn sản phẩm để xem giá tham chiếu';
+        txt.style.color = 'var(--text-light)';
+        return;
+      }
+
+      const key = productName.toString().trim().toUpperCase();
+      const priceInfo = priceMap[key];
+
+      if (!priceInfo) {
+        // Try partial match
+        const partialKey = Object.keys(priceMap).find(k => k.includes(key) || key.includes(k));
+        if (partialKey) {
+          return autoFillPrice(partialKey); // recurse with matched key
+        }
+        txt.innerHTML = '<i class="fas fa-info-circle"></i> Chưa có giá trong dữ liệu nhà máy';
+        txt.style.color = 'var(--text-light)';
+        return;
+      }
+
+      const fmt = (v) => {
+        if (v === null || v === undefined || v === '') return '—';
+        const num = parseFloat(v.toString().replace(/[^\d.]/g, ''));
+        if (isNaN(num)) return v;
+        return num.toLocaleString('vi-VN') + ' đ';
+      };
+
+      txt.innerHTML = [
+        `<span style="background:var(--primary);color:white;padding:2px 8px;border-radius:4px;font-size:0.8rem;font-weight:600">${priceInfo.tabName}</span>`,
+        `<span style="color:var(--text)">Giá thuần: <strong style="color:var(--primary)">${fmt(priceInfo.orgCost)}</strong></span>`,
+        `<span style="color:var(--text-light)">|</span>`,
+        `<span style="color:var(--text)">Giá + VAT: <strong style="color:var(--accent)">${fmt(priceInfo.vatCost)}</strong></span>`
+      ].join(' ');
+      txt.style.color = 'inherit';
+
+      // Auto-fill the unit price field with the VAT included price ONLY if it's currently empty
+      if (priceInfo.vatCost !== null && priceInfo.vatCost !== undefined && priceInfo.vatCost !== '') {
+        const num = parseFloat(priceInfo.vatCost.toString().replace(/[^\d.]/g, ''));
+        if (!isNaN(num)) {
+          const priceInput = document.getElementById('unitPriceDisplay');
+          if (priceInput && (!priceInput.value || priceInput.value.trim() === '')) {
+            priceInput.value = num; // formatPriceInput will format it
+            if (typeof formatPriceInput === 'function') {
+              formatPriceInput(priceInput);
+            }
+          }
+        }
+      }
+    }
+
+    function onArtCodeChange(value) {
+      if (!value) return;
+
+      // The dropdown value is now "PO88 - BASIC SYMBOL" (maSP - productName)
+      // Extract just the PO code (the part before the first " - ")
+      const parts = value.split(" - ");
+      const searchCode = parts[0].trim();
+
+      // Find by maSP only (get first color variant for lookup purposes)
+      const po = allPOData.find(p => p.maSP.toUpperCase() === searchCode.toUpperCase());
+
+      if (po) {
+        // Fill Art Code field with just the PO code
+        document.getElementById("artCode").value = po.maSP;
+        // Auto-fill product name from TÊN MẪU (e.g. "BASIC SYMBOL", "UGO")
+        // Only auto-fill if the field is currently empty
+        if (!document.getElementById("productName").value) {
+          document.getElementById("productName").value = po.productName || po.maSP;
+        }
+        // Auto-fill price reference from factory data
+        autoFillPrice(po.productName || '');
+        // NOTE: Color field is left empty — user enters it manually
+        // NPL will auto-fill when user types color (color input event listener)
+
+        // Auto-fill NPL if color already typed (pass po for maSP lookup)
+        autoFillNPL(po);
+
+        // Auto-fill image based on PO and current color
+        if (typeof autoFillImage === 'function') autoFillImage(po.maSP, null);
+      }
+    }
+
+    /* ================= TABS ================= */
+    function switchTab(tabId, el) {
+      document
+        .querySelectorAll(".tab-content")
+        .forEach((t) => t.classList.remove("active"));
+      document
+        .querySelectorAll(".nav-item")
+        .forEach((t) => t.classList.remove("active"));
+
+      document.getElementById(tabId).classList.add("active");
+      el.classList.add("active");
+
+      if (tabId === "historyTab") {
+        loadOrderHistory();
+      }
+      if (tabId === "receivingTab") {
+        loadPOHistoryForReceiving();
+      }
+      if (tabId === "bomTab") {
+        loadPOListForBOM();
+      }
+    }
+
+    /* ================= UI UTILS ================= */
+    function sortSizes(sizes) {
+      // Predefined garment size order
+      const sizeOrder = ['XXS', 'XS', 'S', 'M', 'L', 'XL', '2XL', 'XXL', '3XL', 'XXXL', '4XL', '5XL', 'FREE'];
+      function getSizeRank(s) {
+        const upper = s.toUpperCase().trim();
+        const idx = sizeOrder.indexOf(upper);
+        if (idx >= 0) return idx; // known garment size
+        const num = parseFloat(s);
+        if (!isNaN(num)) return 100 + num; // numeric size (28, 29, 30...)
+        return 200; // unknown → sort last
+      }
+      return sizes.slice().sort((a, b) => getSizeRank(a) - getSizeRank(b));
+    }
+
+    function formatMoney(v) {
+      return Number(v || 0).toLocaleString("vi-VN");
+    }
+
+    function formatPriceInput(el) {
+      let val = el.value.replace(/[^0-9]/g, "");
+      document.getElementById("unitPrice").value = val;
+      el.value = val ? Number(val).toLocaleString("vi-VN") : "";
+    }
+
+    function showToast(msg, type = "success") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+
+      const icon =
+        type === "success" ? "fa-check-circle" : "fa-exclamation-circle";
+      toast.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => toast.classList.add("show"), 10);
+      setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function showSpinner(text) {
+      document.getElementById("spinnerText").innerText =
+        text || "Đang xử lý...";
+      document.getElementById("spinner").style.display = "flex";
+    }
+    function hideSpinner() {
+      document.getElementById("spinner").style.display = "none";
+    }
+
+    /* ================= SIZE MANAGEMENT ================= */
+    function addSizeRow() {
+      sizeConfigRows.push({ size: "", qty: 0 });
+      renderSizeRows();
+    }
+
+    function removeSizeRow(index) {
+      sizeConfigRows.splice(index, 1);
+      renderSizeRows();
+    }
+
+    function renderSizeRows() {
+      const container = document.getElementById("sizeRows");
+      container.innerHTML = sizeConfigRows
+        .map(
+          (r, i) => `
     <div class="size-row">
       <input type="text" placeholder="Tên Size (S, M, 28, 29...)" value="${r.size}" oninput="sizeConfigRows[${i}].size=this.value">
       <input type="number" placeholder="Số lượng" value="${r.qty || ""}" oninput="sizeConfigRows[${i}].qty=Number(this.value||0)" min="0">
       <button class="btn btn-outline btn-danger btn-icon" onclick="removeSizeRow(${i})"><i class="fas fa-times"></i></button>
     </div>
   `,
-          )
-          .join("");
-      }
+        )
+        .join("");
+    }
 
-      /* ================= PRODUCT FORM ================= */
-      function clearProductForm() {
-        document.getElementById("productName").value = "";
-        document.getElementById("imageUrl").value = "";
-        document.getElementById("artCode").value = "";
-        document.getElementById("color").value = "";
-        document.getElementById("note").value = "";
-        document.getElementById("nplInfo").value = "";
-        document.getElementById("deliveryDate").value = "";
-        document.getElementById("unitPrice").value = "";
-        document.getElementById("unitPriceDisplay").value = "";
+    /* ================= PRODUCT FORM ================= */
+    function clearProductForm() {
+      document.getElementById("productName").value = "";
+      document.getElementById("imageUrl").value = "";
+      document.getElementById("artCode").value = "";
+      document.getElementById("color").value = "";
+      document.getElementById("note").value = "";
+      document.getElementById("nplInfo").value = "";
+      document.getElementById("deliveryDate").value = "";
+      document.getElementById("unitPrice").value = "";
+      document.getElementById("unitPriceDisplay").value = "";
 
-        sizeConfigRows = [
-          { size: "S", qty: 0 },
-          { size: "M", qty: 0 },
-          { size: "L", qty: 0 },
-          { size: "XL", qty: 0 },
-        ];
-        renderSizeRows();
+      sizeConfigRows = [
+        { size: "S", qty: 0 },
+        { size: "M", qty: 0 },
+        { size: "L", qty: 0 },
+        { size: "XL", qty: 0 },
+      ];
+      renderSizeRows();
 
-        document.getElementById("editIndex").value = "-1";
-        document.getElementById("formTitle").innerHTML =
-          "2. THÔNG TIN SẢN PHẨM";
-        document.getElementById("saveProductBtnText").innerText =
-          "Lưu Sản Phẩm Vào Đơn";
+      document.getElementById("editIndex").value = "-1";
+      document.getElementById("formTitle").innerHTML =
+        "2. THÔNG TIN SẢN PHẨM";
+      document.getElementById("saveProductBtnText").innerText =
+        "Lưu Sản Phẩm Vào Đơn";
 
+      document.getElementById("productName").classList.remove("invalid");
+      document.getElementById("unitPriceDisplay").classList.remove("invalid");
+    }
+
+    function saveProduct() {
+      // Validation
+      const name = document.getElementById("productName").value.trim();
+      const price = document.getElementById("unitPrice").value;
+      let isValid = true;
+
+      if (!name) {
+        document.getElementById("productName").classList.add("invalid");
+        isValid = false;
+      } else {
         document.getElementById("productName").classList.remove("invalid");
-        document.getElementById("unitPriceDisplay").classList.remove("invalid");
       }
 
-      function saveProduct() {
-        // Validation
-        const name = document.getElementById("productName").value.trim();
-        const price = document.getElementById("unitPrice").value;
-        let isValid = true;
+      if (!price || Number(price) <= 0) {
+        document.getElementById("unitPriceDisplay").classList.add("invalid");
+        isValid = false;
+      } else {
+        document
+          .getElementById("unitPriceDisplay")
+          .classList.remove("invalid");
+      }
 
-        if (!name) {
-          document.getElementById("productName").classList.add("invalid");
-          isValid = false;
-        } else {
-          document.getElementById("productName").classList.remove("invalid");
+      if (!isValid) {
+        showToast("Vui lòng điền các trường bắt buộc (*)", "error");
+        return;
+      }
+
+      // Parse sizes
+      const sizeData = {};
+      let totalQty = 0;
+      sizeConfigRows.forEach((r) => {
+        if (r.size && r.size.trim() !== "" && r.qty > 0) {
+          const q = parseInt(r.qty);
+          sizeData[r.size.trim()] = q;
+          totalQty += q;
         }
+      });
 
-        if (!price || Number(price) <= 0) {
-          document.getElementById("unitPriceDisplay").classList.add("invalid");
-          isValid = false;
-        } else {
-          document
-            .getElementById("unitPriceDisplay")
-            .classList.remove("invalid");
-        }
+      if (totalQty === 0) {
+        showToast("Vui lòng nhập số lượng cho ít nhất 1 size!", "error");
+        return;
+      }
 
-        if (!isValid) {
-          showToast("Vui lòng điền các trường bắt buộc (*)", "error");
-          return;
-        }
+      const product = {
+        productName: name,
+        imageUrl: document.getElementById("imageUrl").value.trim(),
+        artCode: document.getElementById("artCode").value.trim(),
+        color: document.getElementById("color").value.trim(),
+        sizeData: sizeData,
+        totalQty: totalQty,
+        unitPrice: Number(price),
+        note: document.getElementById("note").value.trim(),
+        nplInfo: document.getElementById("nplInfo").value.trim(),
+        deliveryDate: document.getElementById("deliveryDate").value,
+      };
 
-        // Parse sizes
-        const sizeData = {};
-        let totalQty = 0;
-        sizeConfigRows.forEach((r) => {
-          if (r.size && r.size.trim() !== "" && r.qty > 0) {
-            const q = parseInt(r.qty);
-            sizeData[r.size.trim()] = q;
-            totalQty += q;
-          }
-        });
+      const editIndex = parseInt(document.getElementById("editIndex").value);
+      if (editIndex >= 0) {
+        orderItems[editIndex] = product;
+        showToast("Cập nhật sản phẩm thành công!");
+      } else {
+        orderItems.push(product);
+        showToast("Đã thêm sản phẩm vào đơn!");
+      }
 
-        if (totalQty === 0) {
-          showToast("Vui lòng nhập số lượng cho ít nhất 1 size!", "error");
-          return;
-        }
+      clearProductForm();
+      renderPreview();
 
-        const product = {
-          productName: name,
-          imageUrl: document.getElementById("imageUrl").value.trim(),
-          artCode: document.getElementById("artCode").value.trim(),
-          color: document.getElementById("color").value.trim(),
-          sizeData: sizeData,
-          totalQty: totalQty,
-          unitPrice: Number(price),
-          note: document.getElementById("note").value.trim(),
-          nplInfo: document.getElementById("nplInfo").value.trim(),
-          deliveryDate: document.getElementById("deliveryDate").value,
-        };
+      // Scroll to preview
+      document
+        .getElementById("previewArea")
+        .scrollIntoView({ behavior: "smooth", block: "center" });
+    }
 
-        const editIndex = parseInt(document.getElementById("editIndex").value);
-        if (editIndex >= 0) {
-          orderItems[editIndex] = product;
-          showToast("Cập nhật sản phẩm thành công!");
-        } else {
-          orderItems.push(product);
-          showToast("Đã thêm sản phẩm vào đơn!");
-        }
+    function editProduct(index) {
+      const p = orderItems[index];
+      document.getElementById("productName").value = p.productName;
+      document.getElementById("imageUrl").value = p.imageUrl;
+      document.getElementById("artCode").value = p.artCode;
+      document.getElementById("color").value = p.color;
+      document.getElementById("note").value = p.note;
+      document.getElementById("nplInfo").value = p.nplInfo;
+      document.getElementById("deliveryDate").value = p.deliveryDate || "";
 
-        clearProductForm();
+      document.getElementById("unitPrice").value = p.unitPrice;
+      document.getElementById("unitPriceDisplay").value = formatMoney(
+        p.unitPrice,
+      );
+
+      sizeConfigRows = [];
+      for (let size in p.sizeData) {
+        sizeConfigRows.push({ size: size, qty: p.sizeData[size] });
+      }
+      // Add empty row for expansion
+      sizeConfigRows.push({ size: "", qty: 0 });
+      renderSizeRows();
+
+      document.getElementById("editIndex").value = index;
+      document.getElementById("formTitle").innerHTML =
+        "2. SỬA THÔNG TIN SẢN PHẨM (Dòng " + (index + 1) + ")";
+      document.getElementById("saveProductBtnText").innerText =
+        "Cập Nhật Thay Đổi";
+
+      document
+        .getElementById("productFormCard")
+        .scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function deleteProduct(index) {
+      if (confirm("Bạn có chắc muốn xóa sản phẩm này khỏi đơn?")) {
+        orderItems.splice(index, 1);
         renderPreview();
-
-        // Scroll to preview
-        document
-          .getElementById("previewArea")
-          .scrollIntoView({ behavior: "smooth", block: "center" });
+        showToast("Đã xóa sản phẩm");
       }
+    }
 
-      function editProduct(index) {
-        const p = orderItems[index];
-        document.getElementById("productName").value = p.productName;
-        document.getElementById("imageUrl").value = p.imageUrl;
-        document.getElementById("artCode").value = p.artCode;
-        document.getElementById("color").value = p.color;
-        document.getElementById("note").value = p.note;
-        document.getElementById("nplInfo").value = p.nplInfo;
-        document.getElementById("deliveryDate").value = p.deliveryDate || "";
+    /* ================= PREVIEW ================= */
+    function renderPreview() {
+      const area = document.getElementById("previewArea");
 
-        document.getElementById("unitPrice").value = p.unitPrice;
-        document.getElementById("unitPriceDisplay").value = formatMoney(
-          p.unitPrice,
-        );
-
-        sizeConfigRows = [];
-        for (let size in p.sizeData) {
-          sizeConfigRows.push({ size: size, qty: p.sizeData[size] });
-        }
-        // Add empty row for expansion
-        sizeConfigRows.push({ size: "", qty: 0 });
-        renderSizeRows();
-
-        document.getElementById("editIndex").value = index;
-        document.getElementById("formTitle").innerHTML =
-          "2. SỬA THÔNG TIN SẢN PHẨM (Dòng " + (index + 1) + ")";
-        document.getElementById("saveProductBtnText").innerText =
-          "Cập Nhật Thay Đổi";
-
-        document
-          .getElementById("productFormCard")
-          .scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-
-      function deleteProduct(index) {
-        if (confirm("Bạn có chắc muốn xóa sản phẩm này khỏi đơn?")) {
-          orderItems.splice(index, 1);
-          renderPreview();
-          showToast("Đã xóa sản phẩm");
-        }
-      }
-
-      /* ================= PREVIEW ================= */
-      function renderPreview() {
-        const area = document.getElementById("previewArea");
-
-        if (orderItems.length === 0) {
-          area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-light); font-style:italic;">
+      if (orderItems.length === 0) {
+        area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-light); font-style:italic;">
              Chưa có sản phẩm nào. Vui lòng thêm sản phẩm ở form phía trên.
           </div>`;
-          return;
-        }
+        return;
+      }
 
-        const vatRate = Number(document.getElementById("vatRate").value || 0);
-        const subtotal = orderItems.reduce(
-          (s, it) => s + it.totalQty * it.unitPrice,
-          0,
-        );
-        const vatTotal = subtotal * (vatRate / 100);
-        const grandTotal = subtotal + vatTotal;
+      const vatRate = Number(document.getElementById("vatRate").value || 0);
+      const subtotal = orderItems.reduce(
+        (s, it) => s + it.totalQty * it.unitPrice,
+        0,
+      );
+      const vatTotal = subtotal * (vatRate / 100);
+      const grandTotal = subtotal + vatTotal;
 
-        // Extract all unique sizes across all items to build dynamic headers
-        const allSizesSet = new Set();
-        orderItems.forEach((it) => {
-          Object.keys(it.sizeData).forEach((s) => allSizesSet.add(s));
-        });
-        // Sort sizes logically if possible, or just alphabetically
-        const allSizes = Array.from(allSizesSet).sort();
+      // Extract all unique sizes across all items to build dynamic headers
+      const allSizesSet = new Set();
+      orderItems.forEach((it) => {
+        Object.keys(it.sizeData).forEach((s) => allSizesSet.add(s));
+      });
+      // Sort sizes logically if possible, or just alphabetically
+      const allSizes = Array.from(allSizesSet).sort();
 
-        let html = `
+      let html = `
     <div class="table-responsive">
       <table>
         <thead>
@@ -1802,12 +1913,12 @@
         <tbody>
   `;
 
-        orderItems.forEach((it, i) => {
-          const lineSubtotal = it.totalQty * it.unitPrice;
-          const unitVat = it.unitPrice * (vatRate / 100);
-          const lineTotal = lineSubtotal + (lineSubtotal * (vatRate / 100));
+      orderItems.forEach((it, i) => {
+        const lineSubtotal = it.totalQty * it.unitPrice;
+        const unitVat = it.unitPrice * (vatRate / 100);
+        const lineTotal = lineSubtotal + (lineSubtotal * (vatRate / 100));
 
-          html += `
+        html += `
       <tr>
         <td>${i + 1}</td>
         <td>
@@ -1829,9 +1940,9 @@
         <td class="text-left" style="max-width:200px; white-space:normal;">${it.note || "-"}</td>
       </tr>
     `;
-        });
+      });
 
-        html += `
+      html += `
         </tbody>
         <tfoot>
           <tr style="background-color: var(--primary); color: white;">
@@ -1846,62 +1957,62 @@
     </div>
   `;
 
-        area.innerHTML = html;
+      area.innerHTML = html;
+    }
+
+    /* ================= SUBMIT ================= */
+    function submitOrderProcess() {
+      if (orderItems.length === 0) {
+        showToast("Đơn hàng phải có ít nhất 1 sản phẩm!", "error");
+        return;
       }
 
-      /* ================= SUBMIT ================= */
-      function submitOrderProcess() {
-        if (orderItems.length === 0) {
-          showToast("Đơn hàng phải có ít nhất 1 sản phẩm!", "error");
-          return;
-        }
+      const company = document.getElementById("companyName").value.trim();
+      const partner = document.getElementById("partnerName").value.trim();
+      if (!company || !partner) {
+        if (!company)
+          document.getElementById("companyName").classList.add("invalid");
+        if (!partner)
+          document.getElementById("partnerName").classList.add("invalid");
+        showToast("Vui lòng nhập đủ Tên Công Ty và Tên NCC!", "error");
+        return;
+      }
 
-        const company = document.getElementById("companyName").value.trim();
-        const partner = document.getElementById("partnerName").value.trim();
-        if (!company || !partner) {
-          if (!company)
-            document.getElementById("companyName").classList.add("invalid");
-          if (!partner)
-            document.getElementById("partnerName").classList.add("invalid");
-          showToast("Vui lòng nhập đủ Tên Công Ty và Tên NCC!", "error");
-          return;
-        }
+      document.getElementById("companyName").classList.remove("invalid");
+      document.getElementById("partnerName").classList.remove("invalid");
 
-        document.getElementById("companyName").classList.remove("invalid");
-        document.getElementById("partnerName").classList.remove("invalid");
+      const vatRateNum = Number(
+        document.getElementById("vatRate").value || 0,
+      );
+      const subtotal = orderItems.reduce(
+        (s, it) => s + it.totalQty * it.unitPrice,
+        0,
+      );
+      const vatAmount = subtotal * (vatRateNum / 100);
+      const total = subtotal + vatAmount;
 
-        const vatRateNum = Number(
-          document.getElementById("vatRate").value || 0,
-        );
-        const subtotal = orderItems.reduce(
-          (s, it) => s + it.totalQty * it.unitPrice,
-          0,
-        );
-        const vatAmount = subtotal * (vatRateNum / 100);
-        const total = subtotal + vatAmount;
+      const payload = {
+        orderNo: document.getElementById("orderNo").value,
+        orderDate: document.getElementById("orderDate").value,
+        poMonth: document.getElementById("poMonth").value,
+        creatorName: document.getElementById("creatorName").value,
+        companyName: company,
+        partnerName: partner,
+        partnerAddress: document.getElementById("partnerAddress").value,
+        vatRate: vatRateNum,
+        subtotal: subtotal,
+        vatAmount: vatAmount,
+        total: total,
+        items: orderItems,
+      };
 
-        const payload = {
-          orderNo: document.getElementById("orderNo").value,
-          orderDate: document.getElementById("orderDate").value,
-          poMonth: document.getElementById("poMonth").value,
-          creatorName: document.getElementById("creatorName").value,
-          companyName: company,
-          partnerName: partner,
-          partnerAddress: document.getElementById("partnerAddress").value,
-          vatRate: vatRateNum,
-          subtotal: subtotal,
-          vatAmount: vatAmount,
-          total: total,
-          items: orderItems,
-        };
+      showSpinner(isEditMode ? "Đang cập nhật đơn hàng lên hệ thống..." : "Đang lưu đơn hàng lên hệ thống...");
 
-        showSpinner(isEditMode ? "Đang cập nhật đơn hàng lên hệ thống..." : "Đang lưu đơn hàng lên hệ thống...");
-        
-        fetch(WEB_APP_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: isEditMode ? 'updateOrder' : 'saveOrder', data: payload })
-        })
+      fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: isEditMode ? 'updateOrder' : 'saveOrder', data: payload })
+      })
         .then(response => response.json())
         .then(res => {
           hideSpinner();
@@ -1928,25 +2039,25 @@
           hideSpinner();
           showToast("Lỗi kết nối: " + err.message, "error");
         });
-      }
+    }
 
-      /* ================= HISTORY ================= */
-      function loadOrderHistory() {
-        const area = document.getElementById("historyArea");
-        area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-light);">Đang tải dữ liệu <i class="fas fa-spinner fa-spin"></i></div>`;
-        
-        fetch(WEB_APP_URL + "?action=getHistory")
-          .then(response => response.json())
-          .then(res => {
-            if (!res.success || !res.data || res.data.length === 0) {
-              area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-light);">Chưa có đơn hàng nào trong hệ thống.</div>`;
-              return;
-            }
-            
-            allOrdersHistory = res.data;
-            const data = res.data;
+    /* ================= HISTORY ================= */
+    function loadOrderHistory() {
+      const area = document.getElementById("historyArea");
+      area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-light);">Đang tải dữ liệu <i class="fas fa-spinner fa-spin"></i></div>`;
 
-            let html = `
+      fetch(WEB_APP_URL + "?action=getHistory")
+        .then(response => response.json())
+        .then(res => {
+          if (!res.success || !res.data || res.data.length === 0) {
+            area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-light);">Chưa có đơn hàng nào trong hệ thống.</div>`;
+            return;
+          }
+
+          allOrdersHistory = res.data;
+          const data = res.data;
+
+          let html = `
         <div class="table-responsive">
           <table>
             <thead>
@@ -1961,20 +2072,20 @@
             <tbody>
       `;
 
-            data.forEach((order) => {
-              let dateStr = "";
-              try {
-                const d = new Date(order.timestamp);
-                dateStr =
-                  d.toLocaleDateString("vi-VN") +
-                  " " +
-                  d.toLocaleTimeString("vi-VN", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  });
-              } catch (e) {}
+          data.forEach((order) => {
+            let dateStr = "";
+            try {
+              const d = new Date(order.timestamp);
+              dateStr =
+                d.toLocaleDateString("vi-VN") +
+                " " +
+                d.toLocaleTimeString("vi-VN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
+            } catch (e) { }
 
-              html += `
+            html += `
           <tr>
             <td>${dateStr}</td>
             <td style="font-weight:600">${order.orderNo}</td>
@@ -1989,216 +2100,216 @@
             <td colspan="5" style="padding:0"></td>
           </tr>
         `;
+          });
+
+          html += `</tbody></table></div>`;
+          area.innerHTML = html;
+        })
+        .catch(err => {
+          area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--danger);">Lỗi tải dữ liệu: ${err.message}</div>`;
+        });
+    }
+
+    function toggleOrderDetails(orderNo, btn) {
+      const detailRow = document.getElementById(`details-${orderNo}`);
+      const td = detailRow.querySelector("td");
+
+      if (detailRow.style.display === "none") {
+        detailRow.style.display = "table-row";
+        btn.innerHTML = "Đóng";
+
+        if (!td.innerHTML) {
+          td.innerHTML = `<div style="padding:15px; text-align:center;"><i class="fas fa-spinner fa-spin"></i> Đang tải chi tiết...</div>`;
+
+          fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(orderNo))
+            .then(res => res.json())
+            .then(res => {
+              if (res.success && res.data.length > 0) {
+                let html = `<div style="padding: 15px; border-left: 4px solid var(--primary); margin: 5px 10px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto;"><table style="width:100%; white-space: nowrap;"><thead><tr>`;
+
+                // Lấy tất cả các key từ dòng đầu tiên làm cột
+                const keys = Object.keys(res.data[0]).filter(k => k !== "Mã đơn hàng" && k !== "T.Gian Giao" && k !== "Thành tiền (trước VAT)" && k !== "");
+                keys.forEach(k => html += `<th>${k}</th>`);
+                html += `</tr></thead><tbody>`;
+
+                res.data.forEach(row => {
+                  html += `<tr>`;
+                  keys.forEach(k => {
+                    let val = row[k] !== undefined ? row[k] : "";
+                    if (k === "Đơn giá") val = formatMoney(val) + " đ";
+                    html += `<td class="${k === 'Đơn giá' || k === 'Tổng SL' ? 'text-right' : ''}">${val}</td>`;
+                  });
+                  html += `</tr>`;
+                });
+                html += `</tbody></table></div>`;
+                td.innerHTML = html;
+              } else {
+                td.innerHTML = `<div style="padding:15px; text-align:center; color:red;">Không tìm thấy chi tiết cho đơn hàng này.</div>`;
+              }
+            })
+            .catch(err => {
+              td.innerHTML = `<div style="padding:15px; text-align:center; color:red;">Lỗi kết nối khi tải chi tiết.</div>`;
+            });
+        }
+      } else {
+        detailRow.style.display = "none";
+        btn.innerHTML = "Xem Chi Tiết";
+      }
+    }
+
+    function editOrder(orderNo) {
+      const order = allOrdersHistory.find(o => o.orderNo === orderNo);
+      if (!order) return;
+
+      showSpinner("Đang tải dữ liệu đơn hàng để sửa...");
+
+      fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(orderNo))
+        .then(res => res.json())
+        .then(res => {
+          hideSpinner();
+          if (res.success) {
+            isEditMode = true;
+
+            document.getElementById('orderNo').value = order.orderNo;
+            document.getElementById('orderNo').readOnly = true;
+
+            try {
+              const d = new Date(order.orderDate);
+              const dStr = d.toISOString().split('T')[0];
+              document.getElementById('orderDate').value = dStr;
+            } catch (e) { }
+
+            document.getElementById('poMonth').value = order.poMonth || "";
+            document.getElementById('creatorName').value = order.creatorName || "";
+            document.getElementById('companyName').value = order.companyName || "";
+
+            // Chọn đối tác đúng
+            const partnerSelect = document.getElementById('partnerName');
+            partnerSelect.value = order.partnerName;
+            onPartnerChange(order.partnerName);
+
+            document.getElementById('partnerAddress').value = order.partnerAddress || "";
+
+            let vatObj = document.getElementById('vatRate');
+            vatObj.value = order.vatRate || "8";
+
+            orderItems = [];
+            res.data.forEach(item => {
+              const sizeData = {};
+              let totalQty = 0;
+              Object.keys(item).forEach(k => {
+                if (k.startsWith("Size ") && Number(item[k]) > 0) {
+                  const rawSize = k.replace("Size ", "");
+                  const q = Number(item[k]);
+                  sizeData[rawSize] = q;
+                  totalQty += q;
+                }
+              });
+
+              orderItems.push({
+                productName: item["Tên SP"] || "",
+                artCode: item["Art Code"] || "",
+                color: item["Màu"] || "",
+                nplInfo: item["Thông tin NPL"] || "",
+                deliveryDate: item["T.Gian Giao"] || "",
+                unitPrice: Number(item["Đơn giá"]) || 0,
+                totalQty: totalQty,
+                note: item["Ghi Chú"] || "",
+                sizeData: sizeData
+              });
             });
 
-            html += `</tbody></table></div>`;
-            area.innerHTML = html;
-          })
-          .catch(err => {
-            area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--danger);">Lỗi tải dữ liệu: ${err.message}</div>`;
-          });
-      }
+            renderPreview();
+            switchTab('createTab', document.querySelector('.nav-item[onclick*="createTab"]'));
 
-      function toggleOrderDetails(orderNo, btn) {
-        const detailRow = document.getElementById(`details-${orderNo}`);
-        const td = detailRow.querySelector("td");
-        
-        if (detailRow.style.display === "none") {
-          detailRow.style.display = "table-row";
-          btn.innerHTML = "Đóng";
-          
-          if (!td.innerHTML) {
-             td.innerHTML = `<div style="padding:15px; text-align:center;"><i class="fas fa-spinner fa-spin"></i> Đang tải chi tiết...</div>`;
-             
-             fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(orderNo))
-               .then(res => res.json())
-               .then(res => {
-                  if (res.success && res.data.length > 0) {
-                     let html = `<div style="padding: 15px; border-left: 4px solid var(--primary); margin: 5px 10px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto;"><table style="width:100%; white-space: nowrap;"><thead><tr>`;
-                     
-                     // Lấy tất cả các key từ dòng đầu tiên làm cột
-                     const keys = Object.keys(res.data[0]).filter(k => k !== "Mã đơn hàng" && k !== "T.Gian Giao" && k !== "Thành tiền (trước VAT)" && k !== "");
-                     keys.forEach(k => html += `<th>${k}</th>`);
-                     html += `</tr></thead><tbody>`;
-                     
-                     res.data.forEach(row => {
-                        html += `<tr>`;
-                        keys.forEach(k => {
-                           let val = row[k] !== undefined ? row[k] : "";
-                           if (k === "Đơn giá") val = formatMoney(val) + " đ";
-                           html += `<td class="${k === 'Đơn giá' || k === 'Tổng SL' ? 'text-right' : ''}">${val}</td>`;
-                        });
-                        html += `</tr>`;
-                     });
-                     html += `</tbody></table></div>`;
-                     td.innerHTML = html;
-                  } else {
-                     td.innerHTML = `<div style="padding:15px; text-align:center; color:red;">Không tìm thấy chi tiết cho đơn hàng này.</div>`;
-                  }
-               })
-               .catch(err => {
-                  td.innerHTML = `<div style="padding:15px; text-align:center; color:red;">Lỗi kết nối khi tải chi tiết.</div>`;
-               });
+            const mainBtn = document.querySelector('.floating-actions .btn-primary');
+            if (mainBtn) {
+              mainBtn.innerHTML = '<i class="fas fa-save"></i> Cập Nhật Đơn Hàng';
+            }
+
+            window.scrollTo(0, 0);
+          } else {
+            showToast("Lỗi tải chi tiết đơn: " + res.message, "error");
           }
-        } else {
-          detailRow.style.display = "none";
-          btn.innerHTML = "Xem Chi Tiết";
-        }
+        })
+        .catch(err => {
+          hideSpinner();
+          showToast("Lỗi tải dữ liệu: " + err.message, "error");
+        });
+    }
+
+    /* ================= RECEIVING ================= */
+    let currentReceivingOrderNo = "";
+    let currentReceivingItems = [];
+
+    function loadPOHistoryForReceiving() {
+      fetch(WEB_APP_URL + "?action=getHistory")
+        .then(response => response.json())
+        .then(res => {
+          if (res.success && res.data) {
+            allOrdersHistory = res.data;
+            const datalist = document.getElementById("receiveOrderList");
+            datalist.innerHTML = res.data.map(o => `<option value="${o.orderNo}">${o.partnerName} - ${formatMoney(o.total)} đ</option>`).join("");
+          }
+        });
+    }
+
+    function onReceiveOrderChange(orderNo) {
+      if (!orderNo) {
+        document.getElementById("poSummaryArea").style.display = "none";
+        document.getElementById("receivingItemsArea").innerHTML = "";
+        document.getElementById("receivingActions").style.display = "none";
+        return;
       }
 
-      function editOrder(orderNo) {
-        const order = allOrdersHistory.find(o => o.orderNo === orderNo);
-        if (!order) return;
-        
-        showSpinner("Đang tải dữ liệu đơn hàng để sửa...");
-        
-        fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(orderNo))
-          .then(res => res.json())
-          .then(res => {
-             hideSpinner();
-             if (res.success) {
-                isEditMode = true;
-                
-                document.getElementById('orderNo').value = order.orderNo;
-                document.getElementById('orderNo').readOnly = true;
-                
-                try {
-                  const d = new Date(order.orderDate);
-                  const dStr = d.toISOString().split('T')[0];
-                  document.getElementById('orderDate').value = dStr;
-                } catch(e) {}
-                
-                document.getElementById('poMonth').value = order.poMonth || "";
-                document.getElementById('creatorName').value = order.creatorName || "";
-                document.getElementById('companyName').value = order.companyName || "";
-                
-                // Chọn đối tác đúng
-                const partnerSelect = document.getElementById('partnerName');
-                partnerSelect.value = order.partnerName;
-                onPartnerChange(order.partnerName);
-                
-                document.getElementById('partnerAddress').value = order.partnerAddress || "";
-                
-                let vatObj = document.getElementById('vatRate');
-                vatObj.value = order.vatRate || "8";
-                
-                orderItems = [];
-                res.data.forEach(item => {
-                   const sizeData = {};
-                   let totalQty = 0;
-                   Object.keys(item).forEach(k => {
-                      if (k.startsWith("Size ") && Number(item[k]) > 0) {
-                         const rawSize = k.replace("Size ", "");
-                         const q = Number(item[k]);
-                         sizeData[rawSize] = q;
-                         totalQty += q;
-                      }
-                   });
-                   
-                   orderItems.push({
-                      productName: item["Tên SP"] || "",
-                      artCode: item["Art Code"] || "",
-                      color: item["Màu"] || "",
-                      nplInfo: item["Thông tin NPL"] || "",
-                      deliveryDate: item["T.Gian Giao"] || "",
-                      unitPrice: Number(item["Đơn giá"]) || 0,
-                      totalQty: totalQty,
-                      note: item["Ghi Chú"] || "",
-                      sizeData: sizeData
-                   });
-                });
-                
-                renderPreview();
-                switchTab('createTab', document.querySelector('.nav-item[onclick*="createTab"]'));
-                
-                const mainBtn = document.querySelector('.floating-actions .btn-primary');
-                if (mainBtn) {
-                   mainBtn.innerHTML = '<i class="fas fa-save"></i> Cập Nhật Đơn Hàng';
-                }
-                
-                window.scrollTo(0, 0);
-             } else {
-                showToast("Lỗi tải chi tiết đơn: " + res.message, "error");
-             }
-          })
-          .catch(err => {
-             hideSpinner();
-             showToast("Lỗi tải dữ liệu: " + err.message, "error");
-          });
+      const orderInfo = allOrdersHistory.find(o => o.orderNo === orderNo);
+      if (!orderInfo) {
+        showToast("Mã PO không hợp lệ hoặc không tồn tại!", "error");
+        return;
       }
 
-      /* ================= RECEIVING ================= */
-      let currentReceivingOrderNo = "";
-      let currentReceivingItems = [];
-
-      function loadPOHistoryForReceiving() {
-        fetch(WEB_APP_URL + "?action=getHistory")
-          .then(response => response.json())
-          .then(res => {
-            if (res.success && res.data) {
-              allOrdersHistory = res.data;
-              const datalist = document.getElementById("receiveOrderList");
-              datalist.innerHTML = res.data.map(o => `<option value="${o.orderNo}">${o.partnerName} - ${formatMoney(o.total)} đ</option>`).join("");
-            }
-          });
+      // Show PO Summary
+      document.getElementById("summaryPartner").innerText = orderInfo.partnerName;
+      document.getElementById("summaryCreator").innerText = orderInfo.creatorName;
+      document.getElementById("summaryDate").innerText = new Date(orderInfo.timestamp).toLocaleDateString('vi-VN');
+      let displayMonth = "Không có";
+      if (orderInfo.poMonth) {
+        const parts = orderInfo.poMonth.split("-");
+        if (parts.length === 2) displayMonth = `Tháng ${parts[1]}/${parts[0]}`;
+        else displayMonth = orderInfo.poMonth;
       }
+      document.getElementById("summaryPOMonth").innerText = displayMonth;
+      document.getElementById("poSummaryArea").style.display = "block";
 
-      function onReceiveOrderChange(orderNo) {
-        if (!orderNo) {
-          document.getElementById("poSummaryArea").style.display = "none";
-          document.getElementById("receivingItemsArea").innerHTML = "";
-          document.getElementById("receivingActions").style.display = "none";
-          return;
-        }
+      currentReceivingOrderNo = orderNo;
+      showSpinner("Đang tải chi tiết đơn hàng...");
 
-        const orderInfo = allOrdersHistory.find(o => o.orderNo === orderNo);
-        if (!orderInfo) {
-          showToast("Mã PO không hợp lệ hoặc không tồn tại!", "error");
-          return;
-        }
+      fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(orderNo))
+        .then(res => res.json())
+        .then(res => {
+          hideSpinner();
+          if (res.success && res.data.length > 0) {
+            currentReceivingItems = res.data;
+            renderReceivingItems(res.data);
+            document.getElementById("receivingActions").style.display = "flex";
+          } else {
+            showToast("Không tìm thấy chi tiết đơn hàng!", "error");
+          }
+        })
+        .catch(err => {
+          hideSpinner();
+          showToast("Lỗi tải chi tiết: " + err.message, "error");
+        });
+    }
 
-        // Show PO Summary
-        document.getElementById("summaryPartner").innerText = orderInfo.partnerName;
-        document.getElementById("summaryCreator").innerText = orderInfo.creatorName;
-        document.getElementById("summaryDate").innerText = new Date(orderInfo.timestamp).toLocaleDateString('vi-VN');
-        let displayMonth = "Không có";
-        if (orderInfo.poMonth) {
-          const parts = orderInfo.poMonth.split("-");
-          if (parts.length === 2) displayMonth = `Tháng ${parts[1]}/${parts[0]}`;
-          else displayMonth = orderInfo.poMonth;
-        }
-        document.getElementById("summaryPOMonth").innerText = displayMonth;
-        document.getElementById("poSummaryArea").style.display = "block";
+    function renderReceivingItems(items) {
+      const area = document.getElementById("receivingItemsArea");
 
-        currentReceivingOrderNo = orderNo;
-        showSpinner("Đang tải chi tiết đơn hàng...");
-        
-        fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(orderNo))
-          .then(res => res.json())
-          .then(res => {
-            hideSpinner();
-            if (res.success && res.data.length > 0) {
-              currentReceivingItems = res.data;
-              renderReceivingItems(res.data);
-              document.getElementById("receivingActions").style.display = "flex";
-            } else {
-              showToast("Không tìm thấy chi tiết đơn hàng!", "error");
-            }
-          })
-          .catch(err => {
-            hideSpinner();
-            showToast("Lỗi tải chi tiết: " + err.message, "error");
-          });
-      }
+      // Extract size columns
+      const allKeys = Object.keys(items[0]);
+      const sizeKeys = allKeys.filter(k => k.startsWith("Size "));
 
-      function renderReceivingItems(items) {
-        const area = document.getElementById("receivingItemsArea");
-        
-        // Extract size columns
-        const allKeys = Object.keys(items[0]);
-        const sizeKeys = allKeys.filter(k => k.startsWith("Size "));
-        
-        let html = `
+      let html = `
           <div class="card">
             <div class="card-header">
               <h3>CHI TIẾT SẢN PHẨM TRONG ĐƠN ${currentReceivingOrderNo}</h3>
@@ -2216,9 +2327,9 @@
                 </thead>
                 <tbody>
         `;
-        
-        items.forEach((it, idx) => {
-          html += `
+
+      items.forEach((it, idx) => {
+        html += `
             <tr style="background:#f8fafc; font-weight:bold">
               <td>${idx + 1}</td>
               <td class="text-left">${it["Tên SP"]}</td>
@@ -2229,8 +2340,8 @@
             <tr>
               <td colspan="3" style="text-align:right; color:var(--primary); font-weight:600">NHẬP THỰC TẾ:</td>
               ${sizeKeys.map(k => {
-                const isOrdered = it[k] && Number(it[k]) > 0;
-                return `<td>
+          const isOrdered = it[k] && Number(it[k]) > 0;
+          return `<td>
                   <input type="number" class="receive-qty-input" 
                     data-idx="${idx}" 
                     data-size="${k.replace('Size ', '')}" 
@@ -2243,82 +2354,82 @@
                     ${!isOrdered ? 'disabled style="background:#eee"' : ''}
                     style="width:70px; padding:5px; text-align:center">
                 </td>`;
-              }).join("")}
+        }).join("")}
               <td style="font-weight: bold; color: var(--success); text-align: center; font-size: 1.1em;" id="total-receive-${idx}">0</td>
             </tr>
           `;
-        });
-        
-        html += `</tbody></table></div></div>`;
-        area.innerHTML = html;
+      });
+
+      html += `</tbody></table></div></div>`;
+      area.innerHTML = html;
+    }
+
+    function calcReceiveTotal(idx) {
+      const inputs = document.querySelectorAll(`.receive-qty-input[data-idx="${idx}"]`);
+      let total = 0;
+      inputs.forEach(inp => {
+        total += Number(inp.value) || 0;
+      });
+      document.getElementById(`total-receive-${idx}`).innerText = total;
+    }
+
+    function submitReceivingProcess() {
+      const receiver = document.getElementById("receiverName").value.trim();
+      const date = document.getElementById("receivingDate").value;
+      const batch = document.getElementById("receiveBatch").value.trim();
+
+      if (!receiver || !date || !batch) {
+        showToast("Vui lòng nhập người nhận, ngày và đợt nhập hàng!", "error");
+        return;
       }
 
-      function calcReceiveTotal(idx) {
-        const inputs = document.querySelectorAll(`.receive-qty-input[data-idx="${idx}"]`);
-        let total = 0;
-        inputs.forEach(inp => {
-          total += Number(inp.value) || 0;
-        });
-        document.getElementById(`total-receive-${idx}`).innerText = total;
-      }
+      const inputs = document.querySelectorAll(".receive-qty-input");
+      const receivingItemsMap = {};
 
-      function submitReceivingProcess() {
-        const receiver = document.getElementById("receiverName").value.trim();
-        const date = document.getElementById("receivingDate").value;
-        const batch = document.getElementById("receiveBatch").value.trim();
-        
-        if (!receiver || !date || !batch) {
-          showToast("Vui lòng nhập người nhận, ngày và đợt nhập hàng!", "error");
-          return;
-        }
-        
-        const inputs = document.querySelectorAll(".receive-qty-input");
-        const receivingItemsMap = {};
-        
-        inputs.forEach(input => {
-          const qty = Number(input.value);
-          if (qty > 0) {
-            const art = input.dataset.art;
-            const color = input.dataset.color;
-            const productName = input.dataset.product;
-            const size = input.dataset.size;
-            
-            const key = art + "_" + color + "_" + productName;
-            if (!receivingItemsMap[key]) {
-              receivingItemsMap[key] = {
-                productName: productName,
-                artCode: art,
-                color: color,
-                sizeData: {}
-              };
-            }
-            receivingItemsMap[key].sizeData[size] = qty;
+      inputs.forEach(input => {
+        const qty = Number(input.value);
+        if (qty > 0) {
+          const art = input.dataset.art;
+          const color = input.dataset.color;
+          const productName = input.dataset.product;
+          const size = input.dataset.size;
+
+          const key = art + "_" + color + "_" + productName;
+          if (!receivingItemsMap[key]) {
+            receivingItemsMap[key] = {
+              productName: productName,
+              artCode: art,
+              color: color,
+              sizeData: {}
+            };
           }
-        });
-        
-        const receivingItems = Object.values(receivingItemsMap);
-        
-        if (receivingItems.length === 0) {
-          showToast("Chưa nhập số lượng cho sản phẩm nào!", "error");
-          return;
+          receivingItemsMap[key].sizeData[size] = qty;
         }
-        
-        const orderInfo = allOrdersHistory.find(o => o.orderNo === currentReceivingOrderNo);
-        const payload = {
-          orderNo: currentReceivingOrderNo,
-          poMonth: orderInfo ? orderInfo.poMonth : "",
-          receiverName: receiver,
-          receivingDate: date,
-          receiveBatch: batch,
-          items: receivingItems
-        };
-        
-        showSpinner("Đang lưu dữ liệu nhập hàng...");
-        
-        fetch(WEB_APP_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'saveReceiving', data: payload })
-        })
+      });
+
+      const receivingItems = Object.values(receivingItemsMap);
+
+      if (receivingItems.length === 0) {
+        showToast("Chưa nhập số lượng cho sản phẩm nào!", "error");
+        return;
+      }
+
+      const orderInfo = allOrdersHistory.find(o => o.orderNo === currentReceivingOrderNo);
+      const payload = {
+        orderNo: currentReceivingOrderNo,
+        poMonth: orderInfo ? orderInfo.poMonth : "",
+        receiverName: receiver,
+        receivingDate: date,
+        receiveBatch: batch,
+        items: receivingItems
+      };
+
+      showSpinner("Đang lưu dữ liệu nhập hàng...");
+
+      fetch(WEB_APP_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'saveReceiving', data: payload })
+      })
         .then(res => res.json())
         .then(res => {
           hideSpinner();
@@ -2340,67 +2451,67 @@
           hideSpinner();
           showToast("Lỗi kết nối: " + err.message, "error");
         });
+    }
+
+    /* ================= PDF EXPORT ================= */
+    function exportPDF() {
+      if (orderItems.length === 0) {
+        showToast("Không có thông tin để xem bản in / xuất PDF!", "error");
+        return;
       }
 
-      /* ================= PDF EXPORT ================= */
-      function exportPDF() {
-        if (orderItems.length === 0) {
-          showToast("Không có thông tin để xem bản in / xuất PDF!", "error");
-          return;
+      const company =
+        document.getElementById("companyName").value || "..................";
+      const supplier =
+        document.getElementById("partnerName").value || "..................";
+      const address =
+        document.getElementById("partnerAddress").value ||
+        "..................";
+      const orderCode = document.getElementById("orderNo").value;
+      const creator = document.getElementById("creatorName").value || "..................";
+
+      const partnerData = allPartnersData.find(p => p.tradeName === supplier);
+      const repName = partnerData && partnerData.representative ? partnerData.representative.replace(/\\n/g, '<br>') : "..................";
+
+      // Format order date dynamically
+      const dtVal = document.getElementById("orderDate").value;
+      let dateObj = new Date();
+      if (dtVal) dateObj = new Date(dtVal);
+      const dateStr = `Ngày ${String(dateObj.getDate()).padStart(2, "0")} tháng ${String(dateObj.getMonth() + 1).padStart(2, "0")} năm ${dateObj.getFullYear()}`;
+      const yearStr = String(dateObj.getFullYear());
+      const issueDateStr = String(dateObj.getDate()).padStart(2, "0") + "/" + String(dateObj.getMonth() + 1).padStart(2, "0") + "/" + dateObj.getFullYear();
+
+      const vatRateNum = Number(
+        document.getElementById("vatRate").value || 0,
+      );
+
+      const subtotal = orderItems.reduce(
+        (s, it) => s + it.totalQty * it.unitPrice,
+        0,
+      );
+      const vatTotal = subtotal * (vatRateNum / 100);
+      const grandTotal = subtotal + vatTotal;
+
+      const allSizesSet = new Set();
+      orderItems.forEach((it) => {
+        Object.keys(it.sizeData).forEach((s) => allSizesSet.add(s));
+      });
+      const allSizes = sortSizes(Array.from(allSizesSet));
+
+      let tableRows = "";
+      orderItems.forEach((it, i) => {
+        const lineSubtotal = it.totalQty * it.unitPrice;
+        const unitVat = it.unitPrice * (vatRateNum / 100);
+        const lineVatAmt = lineSubtotal * (vatRateNum / 100);
+        const lineTotal = lineSubtotal + lineVatAmt;
+
+        // Convert delivery date
+        let delStr = "";
+        if (it.deliveryDate) {
+          delStr = new Date(it.deliveryDate).toLocaleDateString("vi-VN");
         }
 
-        const company =
-          document.getElementById("companyName").value || "..................";
-        const supplier =
-          document.getElementById("partnerName").value || "..................";
-        const address =
-          document.getElementById("partnerAddress").value ||
-          "..................";
-        const orderCode = document.getElementById("orderNo").value;
-        const creator = document.getElementById("creatorName").value || "..................";
-
-        const partnerData = allPartnersData.find(p => p.tradeName === supplier);
-        const repName = partnerData && partnerData.representative ? partnerData.representative.replace(/\\n/g, '<br>') : "..................";
-
-        // Format order date dynamically
-        const dtVal = document.getElementById("orderDate").value;
-        let dateObj = new Date();
-        if (dtVal) dateObj = new Date(dtVal);
-        const dateStr = `Ngày ${String(dateObj.getDate()).padStart(2, "0")} tháng ${String(dateObj.getMonth() + 1).padStart(2, "0")} năm ${dateObj.getFullYear()}`;
-        const yearStr = String(dateObj.getFullYear());
-        const issueDateStr = String(dateObj.getDate()).padStart(2, "0") + "/" + String(dateObj.getMonth() + 1).padStart(2, "0") + "/" + dateObj.getFullYear();
-
-        const vatRateNum = Number(
-          document.getElementById("vatRate").value || 0,
-        );
-
-        const subtotal = orderItems.reduce(
-          (s, it) => s + it.totalQty * it.unitPrice,
-          0,
-        );
-        const vatTotal = subtotal * (vatRateNum / 100);
-        const grandTotal = subtotal + vatTotal;
-
-        const allSizesSet = new Set();
-        orderItems.forEach((it) => {
-          Object.keys(it.sizeData).forEach((s) => allSizesSet.add(s));
-        });
-        const allSizes = sortSizes(Array.from(allSizesSet));
-
-        let tableRows = "";
-        orderItems.forEach((it, i) => {
-          const lineSubtotal = it.totalQty * it.unitPrice;
-          const unitVat = it.unitPrice * (vatRateNum / 100);
-          const lineVatAmt = lineSubtotal * (vatRateNum / 100);
-          const lineTotal = lineSubtotal + lineVatAmt;
-
-          // Convert delivery date
-          let delStr = "";
-          if (it.deliveryDate) {
-            delStr = new Date(it.deliveryDate).toLocaleDateString("vi-VN");
-          }
-
-          tableRows += `
+        tableRows += `
       <tr>
         <td>${i + 1}</td>
         <td class="text-left"><b>${it.productName}</b></td>
@@ -2417,11 +2528,11 @@
         <td class="text-left note-td">${it.note || ""}</td>
       </tr>
     `;
-        });
+      });
 
-        const printWindow = window.open("", "_blank");
+      const printWindow = window.open("", "_blank");
 
-        printWindow.document.write(`
+      printWindow.document.write(`
   <!DOCTYPE html>
   <html>
   <head>
@@ -2724,39 +2835,39 @@
 
     <div class="terms">
       <p><span class="highlight-term">1. Giá cả và Phương thức thanh toán:</span></p>
-      ${(function() {
-        // Look up partner-specific payment terms from column O
-        const pd = allPartnersData.find(p => p.tradeName === supplier);
-        if (pd && pd.paymentTermsOrder && pd.paymentTermsOrder.trim()) {
-          // Convert newlines to <br> for proper HTML rendering
-          return pd.paymentTermsOrder.split('\n').map(line => '<p>' + line.trim() + '</p>').join('');
-        }
-        // Fallback generic terms if no data found
-        return '<p>- Đơn giá đã bao gồm chi phí vận chuyển nội thành TP.HCM, chưa bao gồm VAT.</p>' +
-               '<p>- Hình thức thanh toán: Chuyển khoản (Được thanh toán theo mức công nợ gối đầu đã thỏa thuận).</p>';
-      })()}
+      ${(function () {
+          // Look up partner-specific payment terms from column O
+          const pd = allPartnersData.find(p => p.tradeName === supplier);
+          if (pd && pd.paymentTermsOrder && pd.paymentTermsOrder.trim()) {
+            // Convert newlines to <br> for proper HTML rendering
+            return pd.paymentTermsOrder.split('\n').map(line => '<p>' + line.trim() + '</p>').join('');
+          }
+          // Fallback generic terms if no data found
+          return '<p>- Đơn giá đã bao gồm chi phí vận chuyển nội thành TP.HCM, chưa bao gồm VAT.</p>' +
+            '<p>- Hình thức thanh toán: Chuyển khoản (Được thanh toán theo mức công nợ gối đầu đã thỏa thuận).</p>';
+        })()}
       
       <p style="margin-top:15px"><span class="highlight-term">2. Điều kiện giao hàng & Chất lượng:</span></p>
-      ${(function() {
-        // Look up partner-specific delivery terms from column P
-        const pd = allPartnersData.find(p => p.tradeName === supplier);
-        if (pd && pd.deliveryTerms && pd.deliveryTerms.trim()) {
-          return pd.deliveryTerms.split('\n').map(line => {
-            const trimmed = line.trim();
-            if (!trimmed) return '';
-            // Italicize lines starting with "**" (Lưu ý) or "- Đơn đặt hàng này"
-            if (trimmed.startsWith('**') || trimmed.startsWith('- Đơn đặt hàng này')) {
-              return '<p><em>' + trimmed + '</em></p>';
-            }
-            return '<p>' + trimmed + '</p>';
-          }).join('');
-        }
-        // Fallback generic terms if no data found
-        return '<p>- Giao đúng tiến độ theo đơn đặt hàng.</p>' +
-               '<p>- Địa điểm giao: Kho Polomanor số 131/100D Đường 26/3 P.Bình Hưng Hoà, Quận Bình Tân, TPHCM.</p>' +
-               '<p>- Hàng hóa giao phải đúng thiết kế, tài liệu kỹ thuật rập, thông số, đáp ứng 100% tiêu chuẩn chất lượng và quy cách đóng gói của Polomanor.</p>' +
-               '<p>- Các lô hàng phát sinh lỗi do nhà sản xuất sẽ được xử lý bồi thường theo Điều khoản Hợp đồng Nguyên tắc đã ký kết.</p>';
-      })()}
+      ${(function () {
+          // Look up partner-specific delivery terms from column P
+          const pd = allPartnersData.find(p => p.tradeName === supplier);
+          if (pd && pd.deliveryTerms && pd.deliveryTerms.trim()) {
+            return pd.deliveryTerms.split('\n').map(line => {
+              const trimmed = line.trim();
+              if (!trimmed) return '';
+              // Italicize lines starting with "**" (Lưu ý) or "- Đơn đặt hàng này"
+              if (trimmed.startsWith('**') || trimmed.startsWith('- Đơn đặt hàng này')) {
+                return '<p><em>' + trimmed + '</em></p>';
+              }
+              return '<p>' + trimmed + '</p>';
+            }).join('');
+          }
+          // Fallback generic terms if no data found
+          return '<p>- Giao đúng tiến độ theo đơn đặt hàng.</p>' +
+            '<p>- Địa điểm giao: Kho Polomanor số 131/100D Đường 26/3 P.Bình Hưng Hoà, Quận Bình Tân, TPHCM.</p>' +
+            '<p>- Hàng hóa giao phải đúng thiết kế, tài liệu kỹ thuật rập, thông số, đáp ứng 100% tiêu chuẩn chất lượng và quy cách đóng gói của Polomanor.</p>' +
+            '<p>- Các lô hàng phát sinh lỗi do nhà sản xuất sẽ được xử lý bồi thường theo Điều khoản Hợp đồng Nguyên tắc đã ký kết.</p>';
+        })()}
     </div>
 
     <div class="signature-area">
@@ -2794,18 +2905,201 @@
   </html>
   `);
 
-        printWindow.document.close();
-      }
-    </script>
-    <script>
-      // Đăng ký Service Worker cho PWA
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('SW registered:', reg.scope))
-            .catch(err => console.log('SW registration failed:', err));
+      printWindow.document.close();
+    }
+
+    /* ================= BOM CALCULATOR ================= */
+    function loadBOMFromSheet() {
+      const script = document.createElement("script");
+      script.src = "https://docs.google.com/spreadsheets/d/1NbNxKCyZV_lTabuYwjLA27sqrANBZ55gVoLkKatVZOM/gviz/tq?sheet=" + encodeURIComponent("BOM") + "&tqx=responseHandler:processBOMData";
+      document.body.appendChild(script);
+    }
+
+    function processBOMData(json) {
+      try {
+        const rows = json.table.rows;
+        allBOMData = {};
+        const sectionMap = {
+          'POLO': /\bPOLO\b/i, 'TSHIRT': /\bTSHIRT\b/i, 'SHIRT': /\bS[OƠ]\s*MI\b/i,
+          'JACKET': /\bKHO[AÁ]C\b/i, 'LEN': /\bLEN\b/i, 'SHORTS': /\bSHORT\b/i,
+          'QUANDAI': /\bQU[AẦ]N\s*D[AÀ]I\b/i, 'JEANS': /\bJEANS?\b/i, 'BOXER': /\bBOXER\b/i
+        };
+        let currentSection = null;
+        // The first section (POLO) header is in column B's label (parsedNumHeaders), not in data rows
+        const colBLabel = (json.table.cols[1] && json.table.cols[1].label) ? json.table.cols[1].label.trim() : '';
+        if (colBLabel) {
+          for (const [key, regex] of Object.entries(sectionMap)) {
+            if (regex.test(colBLabel)) { currentSection = key; allBOMData[currentSection] = []; break; }
+          }
+        }
+        rows.forEach(row => {
+          if (!row || !row.c) return;
+          const colB = row.c[1] ? (row.c[1].v || '').toString().trim() : '';
+          const colC = row.c[2] ? (row.c[2].v || '').toString().trim() : '';
+          const colF = row.c[5] ? (row.c[5].v || '').toString().trim() : '';
+          if (colB && !colC) {
+            for (const [key, regex] of Object.entries(sectionMap)) {
+              if (regex.test(colB)) { currentSection = key; if (!allBOMData[currentSection]) allBOMData[currentSection] = []; break; }
+            }
+            return;
+          }
+          if (!currentSection || colC === 'STT' || colC === 'No.' || !colF) return;
+          if (!/^\d+\.?$/.test(colC)) return;
+          const nplName = colF;
+          const dvt = row.c[6] ? (row.c[6].v || '').toString().trim() : 'PCS';
+          const moTa = row.c[7] ? (row.c[7].v || '').toString().trim() : '';
+          const nccGoc = row.c[8] ? (row.c[8].v || '').toString().trim() : '';
+          const dinhMuc = row.c[10] && row.c[10].v !== null ? Number(row.c[10].v) : 1;
+          const haoHut = row.c[11] && row.c[11].v !== null ? Number(row.c[11].v) : 0;
+          const isSizeLabel = /SIZE|MẠC DỆT|NHÃN ÉP|HEM TAG|HEATSEAL/i.test(nplName) ||
+                              /SIZE|MẠC DỆT|NHÃN ÉP|HEM TAG|HEATSEAL/i.test(moTa);
+          allBOMData[currentSection].push({ stt: colC, nplName, dvt, moTa, nccGoc, dinhMuc, haoHut, isSizeLabel });
         });
-      }
-    </script>
-  </body>
+      } catch (err) { console.error('processBOMData error:', err); }
+    }
+
+    // Load PO list for BOM tab
+    function loadPOListForBOM() {
+      fetch(WEB_APP_URL + "?action=getHistory")
+        .then(r => r.json())
+        .then(res => {
+          if (res.success && res.data) {
+            allOrdersHistory = res.data;
+            const dl = document.getElementById("bomPOList");
+            dl.innerHTML = res.data.map(o => `<option value="${o.orderNo}">${o.partnerName} - ${formatMoney(o.total)} đ</option>`).join("");
+          }
+        });
+    }
+
+    function onBomPOChange(orderNo) {
+      const summary = document.getElementById("bomPOSummary");
+      const productsArea = document.getElementById("bomPOProductsArea");
+      const resultArea = document.getElementById("bomResultArea");
+      resultArea.innerHTML = '';
+      if (!orderNo) { summary.style.display = "none"; productsArea.style.display = "none"; return; }
+      const info = allOrdersHistory.find(o => o.orderNo === orderNo);
+      if (!info) { showToast("Mã PO không hợp lệ!", "error"); return; }
+      document.getElementById("bomSummaryPO").innerText = orderNo;
+      document.getElementById("bomSummaryPartner").innerText = info.partnerName;
+      document.getElementById("bomSummaryCreator").innerText = info.creatorName;
+      let dm = "—";
+      if (info.poMonth) { const p = info.poMonth.split("-"); if (p.length === 2) dm = `Tháng ${p[1]}/${p[0]}`; else dm = info.poMonth; }
+      document.getElementById("bomSummaryMonth").innerText = dm;
+      summary.style.display = "block";
+      showSpinner("Đang tải chi tiết đơn hàng...");
+      fetch(WEB_APP_URL + "?action=getOrderDetails&orderNo=" + encodeURIComponent(orderNo))
+        .then(r => r.json())
+        .then(res => {
+          hideSpinner();
+          if (res.success && res.data.length > 0) {
+            bomPOItems = res.data;
+            renderBomPOProducts(res.data);
+            productsArea.style.display = "block";
+          } else { showToast("Không tìm thấy chi tiết đơn hàng!", "error"); }
+        })
+        .catch(err => { hideSpinner(); showToast("Lỗi: " + err.message, "error"); });
+    }
+
+    function renderBomPOProducts(items) {
+      const allKeys = Object.keys(items[0]);
+      const sizeKeys = allKeys.filter(k => k.startsWith("Size "));
+      let totalAll = 0;
+      let html = `<div class="table-responsive"><table><thead><tr>
+        <th>STT</th><th class="text-left">Tên SP</th><th>Art</th><th>Màu</th>
+        ${sizeKeys.map(k => `<th>${k.replace('Size ','')}</th>`).join("")}
+        <th style="background:var(--primary);color:white;">Tổng SL</th></tr></thead><tbody>`;
+      items.forEach((it, idx) => {
+        const total = Number(it["Tổng SL"]) || 0;
+        totalAll += total;
+        html += `<tr><td>${idx+1}</td><td class="text-left"><strong>${it["Tên SP"]}</strong></td>
+          <td>${it["Art Code"]||''}</td><td>${it["Màu"]||''}</td>
+          ${sizeKeys.map(k => { const v = Number(it[k])||0; return `<td>${v>0?v:'-'}</td>`; }).join("")}
+          <td style="font-weight:700; color:var(--primary);">${total.toLocaleString('vi-VN')}</td></tr>`;
+      });
+      html += `</tbody></table></div>`;
+      document.getElementById("bomPOProductsList").innerHTML = html;
+      document.getElementById("bomTotalQty").innerText = totalAll.toLocaleString('vi-VN');
+    }
+
+    function onBomTypeChange() { document.getElementById('bomResultArea').innerHTML = ''; }
+
+    function calculateBOM() {
+      const type = document.getElementById('bomProductType').value;
+      if (!type) { showToast('Vui lòng chọn loại sản phẩm (BOM)!', 'error'); return; }
+      const bomItems = allBOMData[type];
+      if (!bomItems || bomItems.length === 0) { showToast('Chưa có dữ liệu BOM cho loại SP này!', 'error'); return; }
+      if (!bomPOItems || bomPOItems.length === 0) { showToast('Vui lòng chọn PO trước!', 'error'); return; }
+      // Aggregate sizes across all products in PO
+      const allKeys = Object.keys(bomPOItems[0]);
+      const sizeKeys = allKeys.filter(k => k.startsWith("Size "));
+      const sizeMap = {};
+      bomPOItems.forEach(it => {
+        sizeKeys.forEach(k => {
+          const v = Number(it[k]) || 0;
+          if (v > 0) { const s = k.replace('Size ', ''); sizeMap[s] = (sizeMap[s] || 0) + v; }
+        });
+      });
+      const validSizes = Object.entries(sizeMap).map(([size, qty]) => ({ size, qty }));
+      if (typeof sortSizes === 'function') { validSizes.sort((a,b) => { const order = ['XXS','XS','S','M','L','XL','2XL','XXL','3XL','XXXL','4XL','5XL']; const ai = order.indexOf(a.size), bi = order.indexOf(b.size); if(ai!==-1&&bi!==-1) return ai-bi; if(ai!==-1) return -1; if(bi!==-1) return 1; return a.size.localeCompare(b.size); }); }
+      const totalQty = validSizes.reduce((s, r) => s + r.qty, 0);
+      if (totalQty === 0) { showToast('Đơn hàng này không có số lượng!', 'error'); return; }
+      renderBOMResult(bomItems, validSizes, totalQty);
+    }
+
+    function renderBOMResult(items, validSizes, totalQty) {
+      const area = document.getElementById('bomResultArea');
+      const sel = document.getElementById('bomProductType');
+      const typeText = sel.options[sel.selectedIndex].text;
+      const orderNo = document.getElementById('bomPOSearch').value.trim();
+      let html = `<div class="card"><div class="card-header"><h3><i class="fas fa-clipboard-list"></i> KẾT QUẢ TÍNH TOÁN PHỤ LIỆU</h3></div>
+        <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px;">
+          <div style="background:var(--primary);color:white;padding:10px 18px;border-radius:6px;font-weight:600;"><i class="fas fa-tag"></i> ${typeText}</div>
+          ${orderNo ? `<div style="background:var(--accent);color:var(--primary);padding:10px 18px;border-radius:6px;font-weight:600;"><i class="fas fa-file-alt"></i> ${orderNo}</div>` : ''}
+          <div style="background:#f0fdf4;color:#166534;padding:10px 18px;border-radius:6px;font-weight:600;border:1px solid #bbf7d0;">Tổng SL: ${totalQty.toLocaleString('vi-VN')} pcs</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:20px;">
+          <span style="font-weight:600;color:var(--primary);margin-right:10px;">Phân bổ size:</span>
+          ${validSizes.map(s => `<span style="display:inline-block;background:white;border:1px solid var(--border);padding:4px 12px;border-radius:4px;margin:3px 4px;font-weight:500;">${s.size}: <strong>${s.qty.toLocaleString('vi-VN')}</strong></span>`).join('')}
+        </div>
+        <div class="table-responsive"><table><thead><tr>
+          <th>STT</th><th class="text-left">Tên NPL</th><th>ĐVT</th><th class="text-left">Mô tả</th><th>NCC</th><th>Định mức</th><th>Hao hụt</th>
+          <th style="background:var(--primary);color:white;">SL Cần Cấp</th><th class="text-left" style="background:var(--primary);color:white;">Chi tiết</th>
+        </tr></thead><tbody>`;
+      items.forEach((item, idx) => {
+        const wf = 1 + (item.haoHut || 0);
+        if (item.isSizeLabel) {
+          const sd = validSizes.map(s => ({ size: s.size, qty: Math.ceil(s.qty * item.dinhMuc * wf) }));
+          const tot = sd.reduce((s, d) => s + d.qty, 0);
+          html += `<tr style="background:#fffbeb;"><td>${idx+1}</td>
+            <td class="text-left"><strong>${item.nplName}</strong> <span style="background:#f59e0b;color:white;padding:1px 6px;border-radius:3px;font-size:0.7rem;font-weight:700;margin-left:6px;">THEO SIZE</span></td>
+            <td>${item.dvt}</td><td class="text-left" style="max-width:220px;white-space:normal;font-size:0.85rem;">${item.moTa.replace(/\n/g,'<br>')}</td>
+            <td>${item.nccGoc}</td><td>${item.dinhMuc}</td><td>${(item.haoHut*100).toFixed(0)}%</td>
+            <td style="font-weight:700;color:var(--primary);font-size:1.1em;">${tot.toLocaleString('vi-VN')}</td>
+            <td class="text-left">${sd.map(d => `<span style="display:inline-block;background:#fef3c7;border:1px solid #fbbf24;padding:2px 8px;border-radius:4px;margin:2px;font-size:0.85rem;">${d.size}: <strong>${d.qty.toLocaleString('vi-VN')}</strong></span>`).join('')}</td></tr>`;
+        } else {
+          const needed = Math.ceil(totalQty * item.dinhMuc * wf);
+          html += `<tr><td>${idx+1}</td><td class="text-left"><strong>${item.nplName}</strong></td>
+            <td>${item.dvt}</td><td class="text-left" style="max-width:220px;white-space:normal;font-size:0.85rem;">${item.moTa.replace(/\n/g,'<br>')}</td>
+            <td>${item.nccGoc}</td><td>${item.dinhMuc}</td><td>${(item.haoHut*100).toFixed(0)}%</td>
+            <td style="font-weight:700;color:var(--primary);font-size:1.1em;">${needed.toLocaleString('vi-VN')}</td>
+            <td class="text-left" style="color:var(--text-light);font-size:0.85rem;">${totalQty.toLocaleString('vi-VN')} × ${item.dinhMuc} × ${wf.toFixed(2)}</td></tr>`;
+        }
+      });
+      html += `</tbody></table></div></div>`;
+      area.innerHTML = html;
+      area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+  <script>
+    // Đăng ký Service Worker cho PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+
 </html>
